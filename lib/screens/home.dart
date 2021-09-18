@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/child.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -58,6 +59,7 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
   final FlutterSecureStorage storage = Get.find();
   //final ChildrenController cc = Get.put(ChildrenController());
   final ChildrenController cc = Get.find();
+  final BabysittersController bs = Get.find();
 
   @override
   void initState() {
@@ -130,21 +132,21 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                       itemCount: cc.count.value,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          onTap: () {
-                            cc.currentChild.value = cc.children[index];
-                            Get.toNamed("/activities");
-                          },
-                          title: Text(
-                            "${cc.children[index].name}",
-                            style: TextStyle(
-                              fontSize: 20.0,
+                            onTap: () {
+                              cc.currentChild.value = cc.children[index];
+                              Get.toNamed("/activities");
+                            },
+                            title: Text(
+                              "${cc.children[index].name}",
+                              style: TextStyle(
+                                fontSize: 20.0,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
-                          ),
-                          subtitle: Column(
-                            children: <Widget>[
-                              Container(
-                                  height: 400.0,
+                            subtitle: Column(
+                              children: <Widget>[
+                                /*Container(
+                                  height: 200.0,
                                   child: Column(
                                     children: [
                                       Text(
@@ -155,20 +157,20 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                                       ),
                                       ListView.builder(
                                         shrinkWrap: true,
-                                        itemCount: 3,
+                                        itemCount: bs.count.value,
                                         itemBuilder: (context, index) {
                                           return ListTile(
-                                            title: Text('dupa',
+                                            title: Text('${bs.babysitters[index].username}',
                                                 textAlign: TextAlign.center),
                                           );
                                         },
                                       ),
                                     ],
-                                  )),
-                              TextButton(
-                                  child: Text('Add Babysitter'),
-                                  onPressed: () {
-                                    /*Get.defaultDialog(
+                                  )),*/
+                                /*TextButton(
+                                    child: Text('Add Babysitter'),
+                                    onPressed: () {
+                                      /*Get.defaultDialog(
                                       title: '',
                                       content: Container(
                                         height: 300.0,
@@ -183,15 +185,20 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                                         ),
                                       ),
                                     );*/
-                                    cc.currentChild.value = cc.children[index];
-                                    Get.toNamed('/searchBabysitters');
-                                  }),
-                            ],
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {},
-                              icon: new Icon(Icons.more_vert)),
-                        );
+                                      cc.currentChild.value =
+                                          cc.children[index];
+                                      Get.toNamed('/searchBabysitters');
+                                    }),*/
+                              ],
+                            ),
+                            trailing: TextButton(
+                              onPressed: () {
+                                cc.currentChild.value =
+                                          cc.children[index];
+                                Get.toNamed('/babysitters');
+                              },
+                              child: Text('show babysitters'),
+                            ));
                       }),
                 )
               ],

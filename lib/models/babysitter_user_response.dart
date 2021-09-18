@@ -11,7 +11,7 @@ class BabysitterUserResponse {
 
   factory BabysitterUserResponse.fromJson(Map<String, dynamic> json) {
 
-    var list = json['users'] as List;
+    var list = json['babysitters'] as List;
     print(list.runtimeType);
     List<Babysitter> babysitterList = list.map((i) => Babysitter.fromJson(i)).toList();
 
