@@ -79,7 +79,7 @@ class _ActivitiesState extends State<Activities> {
                               title: Text("${act.activities[index].action}"),
                               subtitle: Column(
                                 children: <Widget>[
-                                  Text("${act.activities[index].postTime}"),
+                                  Text("${act.activities[index].postTime!.substring(0,10)}"),
                                   Text(
                                       "Author: ${act.activities[index].author!.username}"),
                                 ],

@@ -73,5 +73,32 @@ class ChildrenController extends GetxController {
     }
   }
 
-  
+  void addChild(String name, String birthDate) async {
+    try {
+      var url = Uri.parse("http://10.0.2.2:5000/Children/add");
+      var requestBody = jsonEncode({'name': name, 'birthDate': birthDate});
+      String token = '';
+      await storage
+          .read(key: 'jwt')
+          .then((value) => {if (value != null) token = value});
+
+      final response = await http.post(url, body: requestBody, headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        var childrenList = ChildrenResponse.fromJson(jsonDecode(response.body));
+        children.value = childrenList.children;
+        count.value = childrenList.count;
+        print('ok');
+      }
+      if (response.statusCode == 401) {
+        ac.logOut();
+        Get.toNamed("/login");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {}
+  }
 }

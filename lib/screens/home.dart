@@ -61,6 +61,9 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
   final ChildrenController cc = Get.find();
   final BabysittersController bs = Get.find();
 
+  final childNameController = new TextEditingController();
+  final dateOfBirthController = new TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -193,14 +196,80 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                             ),
                             trailing: TextButton(
                               onPressed: () {
-                                cc.currentChild.value =
-                                          cc.children[index];
+                                cc.currentChild.value = cc.children[index];
                                 Get.toNamed('/babysitters');
                               },
                               child: Text('show babysitters'),
                             ));
                       }),
-                )
+                ),
+                FloatingActionButton.extended(
+                  onPressed: () {
+                    Get.defaultDialog(
+                        title: '',
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: childNameController,
+                              keyboardType: TextInputType.text,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                  labelText: 'Child name',
+                                  hintMaxLines: 1,
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.green, width: 4.0))),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            TextField(
+                              controller: dateOfBirthController,
+                              keyboardType: TextInputType.text,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                  labelText: 'Date of birth',
+                                  hintMaxLines: 1,
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.green, width: 4.0))),
+                              onTap: () async {
+                                var date = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2050));
+                                dateOfBirthController.text =
+                                    date.toString().substring(0, 10);
+                              },
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                cc.addChild(childNameController.text,
+                                    dateOfBirthController.text);
+                                cc.getChildren();
+                                Get.back();
+                                childNameController.clear();
+                                dateOfBirthController.clear();
+                              },
+                              child: Text(
+                                'ADD CHILD',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16.0),
+                              ),
+                            )
+                          ],
+                        ),
+                        radius: 10.0);
+                  },
+                  label: Text("Add Child"),
+                  icon: const Icon(Icons.note_add),
+                  backgroundColor: Colors.blue,
+                ),
               ],
             );
         }));
