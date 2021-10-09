@@ -51,14 +51,16 @@ class _ActivitiesState extends State<Activities> {
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text("Do you wish to delete this activity?"),
+                                        Text(
+                                            "Do you wish to delete this activity?"),
                                         SizedBox(
                                           height: 30.0,
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
                                             act.deleteActivity(
-                                                act.currentActivity.value.activityId!,
+                                                act.currentActivity.value
+                                                    .activityId!,
                                                 cc.currentChild.value.childId!);
                                             Get.back();
                                           },
@@ -73,8 +75,7 @@ class _ActivitiesState extends State<Activities> {
                                     ),
                                     radius: 10.0);
                               },
-                              onTap: () {
-                              },
+                              onTap: () {},
                               title: Text("${act.activities[index].action}"),
                               subtitle: Column(
                                 children: <Widget>[
@@ -88,46 +89,57 @@ class _ActivitiesState extends State<Activities> {
                                   textStyle: const TextStyle(fontSize: 15),
                                 ),
                                 onPressed: () {
-                                  act.currentActivity.value = act.activities[index];
-                                  var editController = new TextEditingController(text: act.activities[index].action);
+                                  act.currentActivity.value =
+                                      act.activities[index];
+                                  var editController =
+                                      new TextEditingController(
+                                          text: act.activities[index].action);
                                   Get.defaultDialog(
-                                    title: '',
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextField(
-                                          controller: editController,
-                                          keyboardType: TextInputType.text,
-                                          maxLines: 2,
-                                          decoration: InputDecoration(
-                                              labelText: 'Activity',
-                                              hintMaxLines: 1,
-                                              border: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.green, width: 4.0))),
-                                        ),
-                                        SizedBox(
-                                          height: 30.0,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            act.editActivity(act.currentActivity.value.activityId!,cc.currentChild.value.childId!,editController.text);
-                                            act.getActivities(cc.currentChild.value.childId!);
-                                            Get.back();
-                                          },
-                                          child: Text(
-                                            'EDIT ACTIVITY',
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 16.0),
+                                      title: '',
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            controller: editController,
+                                            keyboardType: TextInputType.text,
+                                            maxLines: 2,
+                                            decoration: InputDecoration(
+                                                labelText: 'Activity',
+                                                hintMaxLines: 1,
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.green,
+                                                        width: 4.0))),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    radius: 10.0);
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              act.editActivity(
+                                                  act.currentActivity.value
+                                                      .activityId!,
+                                                  cc.currentChild.value
+                                                      .childId!,
+                                                  editController.text);
+                                              act.getActivities(cc
+                                                  .currentChild.value.childId!);
+                                              Get.back();
+                                            },
+                                            child: Text(
+                                              'EDIT ACTIVITY',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.0),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      radius: 10.0);
                                 },
                                 child: const Text('Edit'),
                               ),
-                              );
+                            );
                           }));
                 }),
                 FloatingActionButton.extended(
