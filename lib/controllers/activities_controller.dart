@@ -15,6 +15,8 @@ class ActivitiesController extends GetxController {
   final FlutterSecureStorage storage = Get.find();
   final AuthController ac = Get.find();
 
+  //dupa
+
   void getActivities(int id) async {
     try {
       loading(true);
