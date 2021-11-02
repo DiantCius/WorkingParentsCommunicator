@@ -1,16 +1,16 @@
-class User {
+class AuthUser {
   final String username;
   final String email;
   final String token;
 
-  User({
+  AuthUser({
     required this.username,
     required this.email,
     required this.token,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory AuthUser.fromJson(Map<String, dynamic> json) {
+    return AuthUser(
       username: json['username'],
       email: json['email'],
       token: json['token'],

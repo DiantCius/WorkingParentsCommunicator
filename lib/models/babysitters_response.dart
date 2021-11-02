@@ -1,21 +1,21 @@
 import 'package:flutter_client/models/babysitter.dart';
 
-class BabysitterUserResponse {
+class BabysittersResponse {
   final List<Babysitter> babysitters;
   final int count;
 
-  BabysitterUserResponse({
+  BabysittersResponse({
     required this.babysitters,
     required this.count,
   });
 
-  factory BabysitterUserResponse.fromJson(Map<String, dynamic> json) {
+  factory BabysittersResponse.fromJson(Map<String, dynamic> json) {
 
     var list = json['babysitters'] as List;
     print(list.runtimeType);
     List<Babysitter> babysitterList = list.map((i) => Babysitter.fromJson(i)).toList();
 
-    return BabysitterUserResponse(
+    return BabysittersResponse(
       babysitters: babysitterList,
       count: json['count'],
     );

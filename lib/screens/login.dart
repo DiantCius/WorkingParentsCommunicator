@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/auth_response.dart';
-import 'package:flutter_client/services/auth_service.dart';
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {

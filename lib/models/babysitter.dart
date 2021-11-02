@@ -1,10 +1,10 @@
 class Babysitter {
-  final String username;
-  final String email;
+  final String? username;
+  final String? email;
 
   Babysitter({
-    required this.username,
-    required this.email,
+    this.username,
+    this.email,
   });
 
   factory Babysitter.fromJson(Map<String, dynamic> json) {
