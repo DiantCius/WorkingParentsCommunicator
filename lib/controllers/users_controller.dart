@@ -58,7 +58,8 @@ class UsersController extends GetxController {
     try {
       var url = Uri.parse("http://10.0.2.2:5000/Babysitters/Add");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
-      var requestBody = jsonEncode({'childId': childId, 'personEmail': personEmail});
+      var requestBody =
+          jsonEncode({'childId': childId, 'personEmail': personEmail});
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -73,20 +74,17 @@ class UsersController extends GetxController {
         var userList = UsersResponse.fromJson(jsonDecode(response.body));
         users.value = userList.users;
         count.value = userList.count;
-        print("ok");
-      }
-      else if (response.statusCode == 401) {
+        return userList;
+      } else if (response.statusCode == 401) {
         ac.logOut();
         Get.toNamed("/login");
-      }
-      else if (response.statusCode != 200 && response.statusCode != 401){
+      } else  {
         var errorResponse = ErrorResponse.fromJson(jsonDecode(response.body));
         return errorResponse;
       }
     } catch (e) {
       print(e.toString());
-    }
-    finally {
+    } finally {
       newUserList.value = users.value;
     }
   }

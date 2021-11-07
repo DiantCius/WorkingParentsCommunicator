@@ -79,7 +79,7 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
         ],
       ),
       body: Obx(() {
-        if (uc.loading.isTrue)
+        if (uc.loading.isTrue || uc.newUserList.length == 0)
           return CircularProgressIndicator();
         else {
           if (isSearchOpened.isFalse)

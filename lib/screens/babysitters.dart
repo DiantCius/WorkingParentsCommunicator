@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
+import 'package:flutter_client/models/babysitters_response.dart';
 import 'package:get/get.dart';
 
 class Babysitters extends StatefulWidget {
@@ -42,6 +43,42 @@ class _BabysittersState extends State<Babysitters> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               onLongPress: () {
+                                bs.currentBabysitter.value =
+                                bs.babysitters[index];
+                                Get.defaultDialog(
+                                    title: '',
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                            "Do you wish to delete this babysitter?"),
+                                        SizedBox(
+                                          height: 30.0,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            bs.deleteBabysitter(bs.currentBabysitter.value.username!, cc.currentChild.value.childId!)
+                                              .then((value) => {
+                                                    if (value
+                                                        is BabysittersResponse)
+                                                      {print('ok')}
+                                                    else
+                                                      Get.defaultDialog(
+                                                          middleText:
+                                                              value.message)
+                                                  });
+                                            Get.back();
+                                          },
+                                          child: Text(
+                                            'DELETE BABYSITTER',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16.0),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    radius: 10.0);
                               },
                               onTap: () {
                               },
@@ -62,6 +99,8 @@ class _BabysittersState extends State<Babysitters> {
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
                 ),
+                //Text(bs.currentBabysitter.value.username!),
+                Text(cc.currentChild.value.childId.toString()),
               ],
             );
         }));

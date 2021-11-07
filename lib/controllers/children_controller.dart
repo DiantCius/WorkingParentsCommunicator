@@ -101,4 +101,36 @@ class ChildrenController extends GetxController {
       print(e.toString());
     } finally {}
   }
+
+  Future deleteChild(int childId) async {
+    try {
+      var url =
+          Uri.parse("http://10.0.2.2:5000/Children/delete?childId=$childId");
+      String token = '';
+      await storage
+          .read(key: 'jwt')
+          .then((value) => {if (value != null) token = value});
+
+      final response = await http.delete(url, headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        var childrenList = ChildrenResponse.fromJson(jsonDecode(response.body));
+        children.value = childrenList.children;
+        count.value = childrenList.count;
+        return childrenList;
+      }
+      if (response.statusCode == 401) {
+        ac.logOut();
+        Get.toNamed("/login");
+      } else {
+        var errorResponse = ErrorResponse.fromJson(jsonDecode(response.body));
+        return errorResponse;
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {}
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/child.dart';
+import 'package:flutter_client/models/children_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
@@ -138,6 +139,44 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                             onTap: () {
                               cc.currentChild.value = cc.children[index];
                               Get.toNamed("/activities");
+                            },
+                            onLongPress: () {
+                              cc.currentChild.value = cc.children[index];
+                              Get.defaultDialog(
+                                  title: '',
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("Do you wish to delete this child?"),
+                                      SizedBox(
+                                        height: 30.0,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          cc
+                                              .deleteChild(cc
+                                                  .currentChild.value.childId!)
+                                              .then((value) => {
+                                                    if (value
+                                                        is ChildrenResponse)
+                                                      {print('ok')}
+                                                    else
+                                                      Get.defaultDialog(
+                                                          middleText:
+                                                              value.message)
+                                                  });
+                                          Get.back();
+                                        },
+                                        child: Text(
+                                          'DELETE CHILD',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.0),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  radius: 10.0);
                             },
                             title: Text(
                               "${cc.children[index].name}",
