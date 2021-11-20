@@ -23,7 +23,8 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
   void initState() {
     super.initState();
     uc.getUsers(cc.currentChild.value.childId!);
-    uc.newUserList.value = uc.returnUsers();
+    uc.newUserList = uc.returnUsers();
+    uc.getCurrentUser();
   }
 
   onSearchFieldChanged(String value) {
@@ -53,6 +54,27 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
       return Text(
         'Choose babysitter ',
         textAlign: TextAlign.center,
+      );
+  }
+
+  Widget trailing(String currentUserEmail, int index) {
+    uc.currentListUser.value = uc.newUserList[index];
+    if (uc.currentUser.value.email == uc.currentListUser.value.invitedBy)
+      return Text('Already invited');
+    else
+      return TextButton(
+        onPressed: () {
+          uc
+              .createInvitation(cc.currentChild.value.childId!,
+                  uc.currentListUser.value.email!)
+              .then((value) => {
+                    if (value is ErrorResponse)
+                      {Get.defaultDialog(middleText: value.message)}
+                    else
+                      {print('ok')}
+                  });
+        },
+        child: Text('Invite'),
       );
   }
 
@@ -97,34 +119,33 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                             subtitle: Column(
                               children: [
                                 Text(uc.newUserList[index].email!),
-                                Text(
-                                    uc.newUserList[index].isInvited!.toString())
                               ],
                             ),
-                            trailing: TextButton(
-                              onPressed: () {
-                                uc.currentUser.value = uc.newUserList[index];
-                                uc
-                                    .addBabysitterToChild(
-                                        cc.currentChild.value.childId!,
-                                        uc.currentUser.value.email!)
-                                    .then((value) => {
-                                          if (value is ErrorResponse)
-                                            {
-                                              Get.defaultDialog(
-                                                  middleText: value.message)
-                                            }
-                                          else
-                                            {print('ok')}
-                                        });
-                              },
-                              child: Text('Invite'),
-                            ),
+                            trailing: Obx(() {
+                              if (uc.currentUser.value.email == uc.newUserList[index].invitedBy)
+                                return Text('Already invited');
+                              else
+                                return TextButton(
+                                  onPressed: () {
+                                    uc
+                                        .createInvitation(cc.currentChild.value.childId!,
+                                            uc.currentListUser.value.email!)
+                                        .then((value) => {
+                                              if (value is ErrorResponse)
+                                                {Get.defaultDialog(middleText: value.message)}
+                                              else
+                                                {print('ok')}
+                                            });
+                                  },
+                                  child: Text('Invite'),
+                                );
+                            }),
                           ));
                     },
                   ),
                 ),
-                Text(uc.newUserList.first.username!),
+                //Text(uc.newUserList.first.username!),
+                //Text(uc.currentUser.value.email!)
               ],
             );
         }

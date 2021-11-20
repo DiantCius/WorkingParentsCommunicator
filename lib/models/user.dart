@@ -1,19 +1,19 @@
 class User {
   final String? username;
   final String? email;
-  final bool? isInvited;
+  final String? invitedBy;
 
   User({
     this.username,
     this.email,
-    this.isInvited
+    this.invitedBy
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       username: json['username'],
       email: json['email'],
-      isInvited: json['isInvited']
+      invitedBy: json['invitedBy']
     );
   }
 }

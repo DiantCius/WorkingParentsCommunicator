@@ -84,7 +84,11 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: Text('Invitations')),
+              title: Text('Invitations'),
+              onTap: () {
+                Get.toNamed('/invitations');
+              },
+            ),
             ListTile(
               title: const Text('Log out'),
               onTap: () {

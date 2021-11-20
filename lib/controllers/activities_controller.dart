@@ -21,8 +21,6 @@ class ActivitiesController extends GetxController {
     test++;
   }
 
-  //dupa
-
   void getActivities(int id) async {
     try {
       loading(true);
