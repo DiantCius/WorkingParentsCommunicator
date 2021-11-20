@@ -23,7 +23,7 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
   void initState() {
     super.initState();
     uc.getUsers(cc.currentChild.value.childId!);
-    uc.newUserList = uc.returnUsers();
+    uc.newUserList.value = uc.returnUsers();
     uc.getCurrentUser();
   }
 
@@ -121,15 +121,11 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                                 Text(uc.newUserList[index].email!),
                               ],
                             ),
-                            trailing: Obx(() {
-                              if (uc.currentUser.value.email == uc.newUserList[index].invitedBy)
-                                return Text('Already invited');
-                              else
-                                return TextButton(
+                            trailing: TextButton(
                                   onPressed: () {
                                     uc
                                         .createInvitation(cc.currentChild.value.childId!,
-                                            uc.currentListUser.value.email!)
+                                            uc.newUserList[index].email!)
                                         .then((value) => {
                                               if (value is ErrorResponse)
                                                 {Get.defaultDialog(middleText: value.message)}
@@ -138,14 +134,13 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                                             });
                                   },
                                   child: Text('Invite'),
-                                );
-                            }),
+                                )
                           ));
                     },
                   ),
                 ),
-                //Text(uc.newUserList.first.username!),
-                //Text(uc.currentUser.value.email!)
+                Text(uc.newUserList.first.username!),
+                Text(uc.currentUser.value.email!)
               ],
             );
         }

@@ -48,12 +48,12 @@ class UsersController extends GetxController {
     } finally {
       loading(false);
       print(count.value);
-      newUserList = users;
+      newUserList.value = users.value;
     }
   }
 
-  RxList<User> returnUsers() {
-    return users;
+  List<User> returnUsers() {
+    return users.value;
   }
 
   Future addBabysitterToChild(int childId, String personEmail) async {
