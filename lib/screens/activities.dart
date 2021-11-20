@@ -29,7 +29,7 @@ class _ActivitiesState extends State<Activities> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("${cc.currentChild.value.name}'s"),
+          title: Text("${cc.currentChild.value.name}'s activities"),
         ),
         body: Obx(() {
           if (act.loading.isTrue)
@@ -80,7 +80,7 @@ class _ActivitiesState extends State<Activities> {
                           subtitle: Column(
                             children: <Widget>[
                               Text(
-                                  "${act.activities[index].postTime!.substring(0, 10)}"),
+                                  "${act.activities[index].postTime!.substring(0, 16).replaceAll('T', ' ')}"),
                               Text(
                                   "Author: ${act.activities[index].author!.username}"),
                             ],
@@ -117,14 +117,6 @@ class _ActivitiesState extends State<Activities> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          /*act.editActivity(
-                                              act.currentActivity.value
-                                                  .activityId!,
-                                              cc.currentChild.value
-                                                  .childId!,
-                                              editController.text);
-                                          act.getActivities(cc
-                                              .currentChild.value.childId!);*/
                                           act.editActivity2(act.currentActivity.value
                                                   .activityId!,
                                               cc.currentChild.value
@@ -135,7 +127,6 @@ class _ActivitiesState extends State<Activities> {
                                             else
                                               Get.defaultDialog(middleText: value.message)
                                           });
-                                          //act.getActivities(cc.currentChild.value.childId!);
                                           Get.back();
                                         },
                                         child: Text(

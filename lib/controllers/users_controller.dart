@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter_client/models/babysitter.dart';
 import 'package:flutter_client/models/error_response.dart';
+import 'package:flutter_client/models/user.dart';
 import 'package:flutter_client/models/users_response.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -12,9 +12,9 @@ import 'auth_controller.dart';
 class UsersController extends GetxController {
   var loading = true.obs;
   var count = 0.obs;
-  var users = <Babysitter>[].obs;
-  var currentUser = Babysitter().obs;
-  var newUserList = <Babysitter>[].obs;
+  var users = <User>[].obs;
+  var currentUser = User().obs;
+  var newUserList = <User>[].obs;
   final FlutterSecureStorage storage = Get.find();
   final AuthController ac = Get.find();
 
@@ -50,7 +50,7 @@ class UsersController extends GetxController {
     }
   }
 
-  List<Babysitter> returnUsers() {
+  List<User> returnUsers() {
     return users.value;
   }
 

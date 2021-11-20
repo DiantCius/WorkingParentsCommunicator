@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/controllers/users_controller.dart';
-import 'package:flutter_client/models/babysitter.dart';
 import 'package:flutter_client/models/error_response.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +30,7 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
     if (value.isEmpty) {
       uc.newUserList.value = uc.returnUsers();
     } else {
-      uc.newUserList.value = uc.newUserList
+      uc.newUserList.value = uc.users
           .where((user) =>
               user.username!.toLowerCase().contains(value.toLowerCase()))
           .toList();
@@ -79,8 +78,10 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
         ],
       ),
       body: Obx(() {
-        if (uc.loading.isTrue || uc.newUserList.length == 0)
+        if (uc.loading.isTrue)
           return CircularProgressIndicator();
+        else if (uc.newUserList.length == 0)
+          return Text('');
         else {
           if (isSearchOpened.isFalse)
             return Text('');
@@ -94,7 +95,11 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                       return Obx(() => ListTile(
                             title: Text(uc.newUserList[index].username!),
                             subtitle: Column(
-                              children: [Text(uc.newUserList[index].email!)],
+                              children: [
+                                Text(uc.newUserList[index].email!),
+                                Text(
+                                    uc.newUserList[index].isInvited!.toString())
+                              ],
                             ),
                             trailing: TextButton(
                               onPressed: () {
@@ -112,53 +117,12 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                                           else
                                             {print('ok')}
                                         });
-                                //uc.getUsers(cc.currentChild.value.childId!);
-                                //bc.getBabysittersForChild(
-                                //    cc.currentChild.value.childId!);
-                                //print(uc.currentUser.value.email);
-                                //Get.back();
                               },
-                              child: Text('Add'),
+                              child: Text('Invite'),
                             ),
                           ));
                     },
                   ),
-                  /*Obx(()=>ListView(
-                    padding: EdgeInsets.all(12.0),
-                    children: uc.newUserList.map((data) {
-                      return ListTile(
-                        title: Text(data.username!),
-                        subtitle: Column(
-                          children: [Text(data.email!)],
-                        ),
-                        onTap: () => print(data),
-                        trailing: TextButton(
-                          onPressed: () {
-                            uc.currentUser.value = data;
-                            bc
-                                .addBabysitterToChild(
-                                    cc.currentChild.value.childId!,
-                                    uc.currentUser.value.email!)
-                                .then((value) => {
-                                      if (value is ErrorResponse)
-                                        {
-                                          Get.defaultDialog(
-                                              middleText: value.message)
-                                        }
-                                      else
-                                        {print('ok')}
-                                    });
-                            uc.getUsers(cc.currentChild.value.childId!);
-                            bc.getBabysittersForChild(
-                                cc.currentChild.value.childId!);
-                            //print(uc.currentUser.value.email);
-                            //Get.back();
-                          },
-                          child: Text('Add'),
-                        ),
-                      );
-                    }).toList(),
-                  )),*/
                 ),
                 Text(uc.newUserList.first.username!),
               ],

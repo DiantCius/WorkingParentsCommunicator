@@ -27,7 +27,7 @@ class _BabysittersState extends State<Babysitters> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("${cc.currentChild.value.name}'s"),
+          title: Text("${cc.currentChild.value.name}'s babysitters"),
         ),
         body: Obx(() {
           if (bs.loading.isTrue)
@@ -95,12 +95,12 @@ class _BabysittersState extends State<Babysitters> {
                   onPressed: () {
                    Get.toNamed('/searchBabysitters');
                   },
-                  label: Text("Add Babysitter"),
+                  label: Text("Invite Babysitter"),
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
                 ),
                 //Text(bs.currentBabysitter.value.username!),
-                Text(cc.currentChild.value.childId.toString()),
+                //Text(cc.currentChild.value.childId.toString()),
               ],
             );
         }));

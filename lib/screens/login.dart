@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
-import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/auth_response.dart';
 import 'package:get/get.dart';
 
@@ -61,7 +60,7 @@ class _LoginState extends State<Login> {
                     hintText: 'Enter secure password'),
               ),
             ),
-            TextButton(
+            /*TextButton(
               onPressed: () {
                 //TODO FORGOT PASSWORD SCREEN GOES HERE
               },
@@ -69,7 +68,8 @@ class _LoginState extends State<Login> {
                 'Forgot Password',
                 style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
-            ),
+            ),*/
+            Container(height: 20,),
             Container(
               height: 50,
               width: 250,

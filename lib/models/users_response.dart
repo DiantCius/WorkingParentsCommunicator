@@ -1,7 +1,7 @@
-import 'package:flutter_client/models/babysitter.dart';
+import 'package:flutter_client/models/user.dart';
 
 class UsersResponse {
-  final List<Babysitter> users;
+  final List<User> users;
   final int count;
 
   UsersResponse({
@@ -13,7 +13,7 @@ class UsersResponse {
 
     var list = json['users'] as List;
     print(list.runtimeType);
-    List<Babysitter> userList = list.map((i) => Babysitter.fromJson(i)).toList();
+    List<User> userList = list.map((i) => User.fromJson(i)).toList();
 
     return UsersResponse(
       users: userList,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
-import 'package:flutter_client/models/child.dart';
 import 'package:flutter_client/models/children_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -71,6 +70,35 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
     cc.getChildren();
   }
 
+  Widget customDrawer() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: Text('Invitations')),
+            ListTile(
+              title: const Text('Log out'),
+              onTap: () {
+                ac.logOut();
+                Get.toNamed('/login');
+                Get.defaultDialog(middleText: 'You have logged out');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,44 +109,7 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
             textAlign: TextAlign.center,
           ),
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Drawer Header'),
-              ),
-              ListTile(
-                title: const Text('get token'),
-                onTap: () {
-                  storage.read(key: 'jwt').then((value) => {
-                        if (value == null)
-                          Get.defaultDialog(middleText: 'no token')
-                        else
-                          Get.defaultDialog(middleText: value)
-                      });
-                },
-              ),
-              ListTile(
-                title: const Text('reload children'),
-                onTap: () {
-                  cc.getChildren();
-                },
-              ),
-              ListTile(
-                title: const Text('Log out'),
-                onTap: () {
-                  ac.logOut();
-                  Get.toNamed('/login');
-                  Get.defaultDialog(middleText: 'You have logged out');
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: customDrawer(),
         body: Obx(() {
           if (cc.loading.isTrue)
             return CircularProgressIndicator();
