@@ -1,17 +1,14 @@
 class Invitation {
   final int? invitationId;
-  final int? addressedUserId;
-  final int? childId;
+  final String? childName;
   final String? inviteDate;
 
-  Invitation(
-      {this.invitationId, this.addressedUserId, this.childId, this.inviteDate});
+  Invitation({this.invitationId,this.childName, this.inviteDate});
 
   factory Invitation.fromJson(Map<String, dynamic> json) {
     return Invitation(
       invitationId: json['invitationId'],
-      addressedUserId: json['addressedUserId'],
-      childId: json['childId'],
+      childName: json['childName'],
       inviteDate: json['inviteDate'],
     );
   }

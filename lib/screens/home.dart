@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
+import 'package:flutter_client/controllers/invitations_controller.dart';
 import 'package:flutter_client/models/children_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -60,6 +61,7 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
   //final ChildrenController cc = Get.put(ChildrenController());
   final ChildrenController cc = Get.find();
   final BabysittersController bs = Get.find();
+  final InvitationsController inv = Get.find();
 
   final childNameController = new TextEditingController();
   final dateOfBirthController = new TextEditingController();
@@ -95,6 +97,12 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                 ac.logOut();
                 Get.toNamed('/login');
                 Get.defaultDialog(middleText: 'You have logged out');
+              },
+            ),
+            ListTile(
+              title: const Text('get invit'),
+              onTap: () {
+                inv.getInvitations();
               },
             ),
           ],

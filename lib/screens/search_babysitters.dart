@@ -115,27 +115,28 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                     itemCount: uc.newUserList.length,
                     itemBuilder: (context, index) {
                       return Obx(() => ListTile(
-                            title: Text(uc.newUserList[index].username!),
-                            subtitle: Column(
-                              children: [
-                                Text(uc.newUserList[index].email!),
-                              ],
-                            ),
-                            trailing: TextButton(
-                                  onPressed: () {
-                                    uc
-                                        .createInvitation(cc.currentChild.value.childId!,
-                                            uc.newUserList[index].email!)
-                                        .then((value) => {
-                                              if (value is ErrorResponse)
-                                                {Get.defaultDialog(middleText: value.message)}
-                                              else
-                                                {print('ok')}
-                                            });
-                                  },
-                                  child: Text('Invite'),
-                                )
-                          ));
+                          title: Text(uc.newUserList[index].username!),
+                          subtitle: Column(
+                            children: [
+                              Text(uc.newUserList[index].email!),
+                            ],
+                          ),
+                          trailing: uc.newUserList[index].invitedBy == uc.currentUser.value.email ? Text('Already invited') : TextButton(
+                            onPressed: () {
+                              uc.currentListUser.value = uc.newUserList[index];
+                              uc.createInvitation(cc.currentChild.value.childId!,uc.currentListUser.value.email!).then((value) => {
+                                if (value is ErrorResponse)
+                                  {
+                                    Get.defaultDialog(
+                                        middleText: value.message)
+                                  }
+                                else
+                                  {print('ok')}
+                              });
+                            },
+                            child: Text('Invite'),
+                          )
+                      ));
                     },
                   ),
                 ),

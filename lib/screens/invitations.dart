@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/controllers/invitations_controller.dart';
+import 'package:flutter_client/models/invitations_response.dart';
 import 'package:get/get.dart';
 
 class Invitations extends StatefulWidget {
@@ -12,6 +14,7 @@ class Invitations extends StatefulWidget {
 
 class _InvitationsState extends State<Invitations> {
   final InvitationsController inv = Get.find();
+  final ChildrenController cc = Get.find();
 
   @override
   void initState() {
@@ -25,12 +28,17 @@ class _InvitationsState extends State<Invitations> {
         appBar: AppBar(
           centerTitle: true,
           title: Text("Invitations "),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              cc.getChildren();
+              Get.back();
+            },
+          ),
         ),
         body: Obx(() {
           if (inv.loading.isTrue)
             return CircularProgressIndicator();
-          else if (inv.count.value == 0)
-            return Text('');
           else
             return Column(
               children: <Widget>[
@@ -40,18 +48,60 @@ class _InvitationsState extends State<Invitations> {
                         itemCount: inv.count.value,
                         itemBuilder: (context, index) {
                           return Obx(() => ListTile(
-                                onLongPress: () {},
-                                onTap: () {},
-                                title: Text(
-                                    "${inv.invitations[index].invitationId}"),
-                                trailing: TextButton(
-                                  style: TextButton.styleFrom(
-                                    textStyle: const TextStyle(fontSize: 15),
+                              onLongPress: () {},
+                              onTap: () {},
+                              title: Row(
+                                children: [
+                                  Text(
+                                      " Invite to babysitt ${inv.invitations[index].childName}",
+                                      style: TextStyle(fontSize: 18)),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      primary: Colors.green,
+                                      textStyle: const TextStyle(fontSize: 18),
+                                    ),
+                                    onPressed: () {
+                                      inv
+                                          .acceptInvitation(
+                                              inv.invitations[index]
+                                                  .invitationId!,
+                                              inv.invitations[index].childName!)
+                                          .then((value) => {
+                                                if (value
+                                                    is InvitationsResponse)
+                                                  {print('ok')}
+                                                else
+                                                  Get.defaultDialog(
+                                                      middleText: value.message)
+                                              });
+                                    },
+                                    child: const Text('Accept'),
                                   ),
-                                  onPressed: () {},
-                                  child: const Text('Details'),
-                                ),
-                              ));
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      primary: Colors.red,
+                                      textStyle: const TextStyle(
+                                          fontSize: 18, color: Colors.red),
+                                    ),
+                                    onPressed: () {
+                                      inv
+                                          .declineInvitation(
+                                              inv.invitations[index]
+                                                  .invitationId!,
+                                              inv.invitations[index].childName!)
+                                          .then((value) => {
+                                                if (value
+                                                    is InvitationsResponse)
+                                                  {print('ok')}
+                                                else
+                                                  Get.defaultDialog(
+                                                      middleText: value.message)
+                                              });
+                                    },
+                                    child: const Text('Decline'),
+                                  ),
+                                ],
+                              )));
                         })),
               ],
             );
