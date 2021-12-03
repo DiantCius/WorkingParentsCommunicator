@@ -53,12 +53,12 @@ class _InvitationsState extends State<Invitations> {
                               title: Row(
                                 children: [
                                   Text(
-                                      " Invite to babysitt ${inv.invitations[index].childName}",
-                                      style: TextStyle(fontSize: 18)),
+                                      "Invitation to babysitt ${inv.invitations[index].childName}",
+                                      style: TextStyle(fontSize: 17)),
                                   TextButton(
                                     style: TextButton.styleFrom(
                                       primary: Colors.green,
-                                      textStyle: const TextStyle(fontSize: 18),
+                                      textStyle: const TextStyle(fontSize: 17),
                                     ),
                                     onPressed: () {
                                       inv

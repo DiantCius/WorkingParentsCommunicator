@@ -39,8 +39,11 @@ class _ActivitiesState extends State<Activities> {
               children: <Widget>[
                 Container(height: 20),
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: act.count.value,
+                      separatorBuilder: (BuildContext context, int index) => Divider(
+                        thickness: 0.5,
+                      ),
                       itemBuilder: (context, index) {
                         return Obx(()=>ListTile(
                           onLongPress: () {
@@ -186,6 +189,9 @@ class _ActivitiesState extends State<Activities> {
                   label: Text("Add Activity"),
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             );

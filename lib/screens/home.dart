@@ -36,15 +36,34 @@ class HomeLocked extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        body: Column(
-          children: [
-            ElevatedButton(
-                child: Text("Log in"), onPressed: () => Get.toNamed("/login")),
-            ElevatedButton(
-                child: Text("Sign up"),
-                onPressed: () => Get.toNamed("/signup")),
-          ],
-        ));
+        body: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed("/login");
+                },
+                child: Text(
+                  ' Log in  ',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed("/signup");
+                },
+                child: Text(
+                  'Sign up ',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ],
+        ),
+        alignment: Alignment.center,
+      ),
+    );
   }
 }
 
@@ -100,9 +119,9 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
               },
             ),
             ListTile(
-              title: const Text('get invit'),
+              title: const Text('chat'),
               onTap: () {
-                inv.getInvitations();
+                Get.toNamed('/chat');
               },
             ),
           ],
@@ -311,6 +330,9 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
                   label: Text("Add Child"),
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             );

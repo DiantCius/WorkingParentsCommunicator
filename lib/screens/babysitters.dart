@@ -28,6 +28,13 @@ class _BabysittersState extends State<Babysitters> {
         appBar: AppBar(
           centerTitle: true,
           title: Text("${cc.currentChild.value.name}'s babysitters"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              cc.getChildren();
+              Get.back();
+            },
+          ),
         ),
         body: Obx(() {
           if (bs.loading.isTrue)
@@ -98,6 +105,9 @@ class _BabysittersState extends State<Babysitters> {
                   label: Text("Invite Babysitter"),
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 //Text(bs.currentBabysitter.value.username!),
                 //Text(cc.currentChild.value.childId.toString()),
