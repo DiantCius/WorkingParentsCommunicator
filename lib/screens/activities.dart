@@ -4,6 +4,8 @@ import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/activities_response.dart';
 import 'package:get/get.dart';
 
+enum DefinedActivities { harder, smarter, selfStarter, tradingCharter }
+
 class Activities extends StatefulWidget {
   const Activities({Key? key}) : super(key: key);
 
@@ -17,6 +19,7 @@ class _ActivitiesState extends State<Activities> {
   final ActivitiesController act = Get.find();
 
   final activityController = new TextEditingController();
+  final notesController = new TextEditingController();
 
   @override
   void initState() {
@@ -27,6 +30,7 @@ class _ActivitiesState extends State<Activities> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         appBar: AppBar(
           centerTitle: true,
           title: Text("${cc.currentChild.value.name}'s activities"),
@@ -82,6 +86,7 @@ class _ActivitiesState extends State<Activities> {
                           title: Text("${act.activities[index].action}"),
                           subtitle: Column(
                             children: <Widget>[
+                              Text("${act.activities[index].notes}"),
                               Text(
                                   "${act.activities[index].postTime!.substring(0, 16).replaceAll('T', ' ')}"),
                               Text(
@@ -98,6 +103,9 @@ class _ActivitiesState extends State<Activities> {
                               var editController =
                                   new TextEditingController(
                                       text: act.activities[index].action);
+                              var editNotesController =
+                                  new TextEditingController(
+                                      text: act.activities[index].notes);
                               Get.defaultDialog(
                                   title: '',
                                   content: Column(
@@ -115,6 +123,19 @@ class _ActivitiesState extends State<Activities> {
                                                     color: Colors.green,
                                                     width: 4.0))),
                                       ),
+                                      SizedBox(height: 10),
+                                      TextField(
+                                        controller: editNotesController,
+                                        keyboardType: TextInputType.text,
+                                        maxLines: 2,
+                                        decoration: InputDecoration(
+                                            labelText: 'Notes',
+                                            hintMaxLines: 1,
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.green,
+                                                    width: 4.0))),
+                                      ),
                                       SizedBox(
                                         height: 30.0,
                                       ),
@@ -124,7 +145,7 @@ class _ActivitiesState extends State<Activities> {
                                                   .activityId!,
                                               cc.currentChild.value
                                                   .childId!,
-                                              editController.text).then((value) => {
+                                              editController.text, editNotesController.text).then((value) => {
                                             if (value is ActivityResponse)
                                               {print('ok')}
                                             else
@@ -147,7 +168,7 @@ class _ActivitiesState extends State<Activities> {
                           ),
                         ));
                       })),               
-                FloatingActionButton.extended(
+                FloatingActionButton.extended(                 
                   onPressed: () {
                     Get.defaultDialog(
                         title: '',
@@ -165,12 +186,24 @@ class _ActivitiesState extends State<Activities> {
                                       borderSide: BorderSide(
                                           color: Colors.green, width: 4.0))),
                             ),
+                            SizedBox(height: 10),
+                            TextField(
+                              controller: notesController,
+                              keyboardType: TextInputType.text,
+                              maxLines: 2,
+                              decoration: InputDecoration(
+                                  labelText: 'Notes',
+                                  hintMaxLines: 1,
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.green, width: 4.0))),
+                            ),
                             SizedBox(
                               height: 30.0,
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                act.addActivity(activityController.text,
+                                act.addActivity(activityController.text, notesController.text,
                                     cc.currentChild.value.childId!);
                                 //act.getActivities(cc.currentChild.value.childId!);
                                 Get.back();
@@ -190,6 +223,27 @@ class _ActivitiesState extends State<Activities> {
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
                 ),
+                PopupMenuButton(
+                  iconSize: 50,
+                  icon: Icon(Icons.plus_one),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<DefinedActivities>>[
+                    const PopupMenuItem<DefinedActivities>(
+                      value: DefinedActivities.harder,
+                      child: Text('Working a lot harder'),
+                    ),
+                    const PopupMenuItem<DefinedActivities>(
+                      value: DefinedActivities.smarter,
+                      child: Text('Being a lot smarter'),
+                    ),
+                    const PopupMenuItem<DefinedActivities>(
+                      value: DefinedActivities.selfStarter,
+                      child: Text('Being a self-starter'),
+                    ),
+                    const PopupMenuItem<DefinedActivities>(
+                      value: DefinedActivities.tradingCharter,
+                      child: Text('Placed in charge of trading charter'),
+                    ),
+                  ],),
                 SizedBox(
                   height: 10,
                 ),
