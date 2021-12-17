@@ -52,11 +52,11 @@ class ActivitiesController extends GetxController {
     }
   }
 
-  void addActivity(String action, int id) async {
+  void addActivity(String action, String notes, int id) async {
     try {
       var url = Uri.parse("http://10.0.2.2:5000/Activities/add");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
-      var requestBody = jsonEncode({'action': action, 'childId': id});
+      var requestBody = jsonEncode({'action': action, 'notes': notes, 'childId': id});
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -142,12 +142,12 @@ class ActivitiesController extends GetxController {
     } finally {}
   }
 
-  Future editActivity2(int activityId, int childId, String action) async {
+  Future editActivity2(int activityId, int childId, String action, String notes) async {
     try {
       var url = Uri.parse("http://10.0.2.2:5000/Activities/edit");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
       var requestBody = jsonEncode(
-          {'activityId': activityId, 'childId': childId, 'action': action});
+          {'activityId': activityId, 'childId': childId, 'action': action, 'notes': notes});
       String token = '';
       await storage
           .read(key: 'jwt')

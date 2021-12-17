@@ -1,8 +1,11 @@
 import 'package:flutter_client/controllers/activities_controller.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/controllers/babysitters_controller.dart';
+import 'package:flutter_client/controllers/chat_users_controller.dart';
+import 'package:flutter_client/controllers/chats_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/controllers/invitations_controller.dart';
+import 'package:flutter_client/controllers/messages_controller.dart';
 import 'package:flutter_client/controllers/users_controller.dart';
 import 'package:get/get.dart';
 
@@ -17,5 +20,8 @@ class HomeBinding implements Bindings {
     Get.put <BabysittersController>(BabysittersController());
     Get.put <UsersController>(UsersController());
     Get.put <InvitationsController>(InvitationsController());
+    Get.put <ChatsController>(ChatsController());
+    Get.put <MessagesController>(MessagesController());
+    Get.put <ChatUsersController>(ChatUsersController());
   }
 }

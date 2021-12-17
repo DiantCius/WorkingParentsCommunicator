@@ -4,10 +4,12 @@ import 'package:flutter_client/bindings/home_binding.dart';
 import 'package:flutter_client/screens/activities.dart';
 import 'package:flutter_client/screens/babysitters.dart';
 import 'package:flutter_client/screens/chat.dart';
+import 'package:flutter_client/screens/chats.dart';
 import 'package:flutter_client/screens/home.dart';
 import 'package:flutter_client/screens/invitations.dart';
 import 'package:flutter_client/screens/login.dart';
 import 'package:flutter_client/screens/search_babysitters.dart';
+import 'package:flutter_client/screens/search_chat_users.dart';
 import 'package:flutter_client/screens/signup.dart';
 import 'package:get/get.dart';
 
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/babysitters', page: () => Babysitters()),
         GetPage(name: '/invitations', page: () => Invitations()),
         GetPage(name: '/chat', page: () => Chat()),
+        GetPage(name: '/chats', page: () => Chats()),
+        GetPage(name: '/searchChatUsers', page: () => SearchChatUsers()),
       ],
     );
   }

@@ -44,7 +44,10 @@ class _InvitationsState extends State<Invitations> {
               children: <Widget>[
                 Container(height: 20),
                 Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) => Divider(
+                            thickness: 0.5,
+                          ),
                         itemCount: inv.count.value,
                         itemBuilder: (context, index) {
                           return Obx(() => ListTile(
