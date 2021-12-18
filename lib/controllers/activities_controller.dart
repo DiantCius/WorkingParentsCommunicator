@@ -12,8 +12,10 @@ class ActivitiesController extends GetxController {
   var loading = true.obs;
   var isEdited = true.obs;
   var activities = <Activity>[].obs;
+  var newActivities = <Activity>[].obs;
   var count = 0.obs;
   var currentActivity = Activity().obs;
+  var date = ''.obs;
   final FlutterSecureStorage storage = Get.find();
   final AuthController ac = Get.find();
 
@@ -52,11 +54,16 @@ class ActivitiesController extends GetxController {
     }
   }
 
+  List<Activity> returnActivities() {
+    return activities.value;
+  }
+
   void addActivity(String action, String notes, int id) async {
     try {
       var url = Uri.parse("http://10.0.2.2:5000/Activities/add");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
-      var requestBody = jsonEncode({'action': action, 'notes': notes, 'childId': id});
+      var requestBody =
+          jsonEncode({'action': action, 'notes': notes, 'childId': id});
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -79,6 +86,8 @@ class ActivitiesController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
+    } finally {
+      getActivitiesByDate();
     }
   }
 
@@ -108,46 +117,22 @@ class ActivitiesController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
+    } finally {
+      getActivitiesByDate();
     }
   }
 
-  void editActivity(int activityId, int childId, String action) async {
+  Future editActivity2(
+      int activityId, int childId, String action, String notes) async {
     try {
       var url = Uri.parse("http://10.0.2.2:5000/Activities/edit");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
-      var requestBody = jsonEncode(
-          {'activityId': activityId, 'childId': childId, 'action': action});
-      String token = '';
-      await storage
-          .read(key: 'jwt')
-          .then((value) => {if (value != null) token = value});
-
-      final response = await http.put(url, body: requestBody, headers: {
-        "Accept": "application/json",
-        "content-type": "application/json",
-        "Authorization": "Bearer $token"
+      var requestBody = jsonEncode({
+        'activityId': activityId,
+        'childId': childId,
+        'action': action,
+        'notes': notes
       });
-      if (response.statusCode == 200) {
-        /*var activityList = ActivityResponse.fromJson(jsonDecode(response.body));
-        activities.value = activityList.activities;
-        count.value = activityList.count;*/
-        print(isEdited.value);
-      }
-      if (response.statusCode == 401) {
-        ac.logOut();
-        Get.toNamed("/login");
-      }
-    } catch (e) {
-      print(e.toString());
-    } finally {}
-  }
-
-  Future editActivity2(int activityId, int childId, String action, String notes) async {
-    try {
-      var url = Uri.parse("http://10.0.2.2:5000/Activities/edit");
-      //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
-      var requestBody = jsonEncode(
-          {'activityId': activityId, 'childId': childId, 'action': action, 'notes': notes});
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -175,6 +160,16 @@ class ActivitiesController extends GetxController {
     } catch (e) {
       print(e.toString());
     } finally {
+      getActivitiesByDate();
     }
+  }
+
+  void getActivitiesByDate() {
+    newActivities.value = returnActivities();
+    newActivities.value = newActivities.value
+        .where((element) =>
+            element.postTime!.substring(0, 10).replaceAll('T', ' ') ==
+            date.value)
+        .toList();
   }
 }
