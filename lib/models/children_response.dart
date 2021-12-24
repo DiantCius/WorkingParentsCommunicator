@@ -9,7 +9,6 @@ class ChildrenResponse {
   factory ChildrenResponse.fromJson(Map<String, dynamic> json) {
 
     var list = json['children'] as List;
-    print(list.runtimeType);
     List<Child> childList = list.map((i) => Child.fromJson(i)).toList();
 
     return ChildrenResponse(

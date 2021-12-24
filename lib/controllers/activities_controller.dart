@@ -50,6 +50,7 @@ class ActivitiesController extends GetxController {
     } catch (e) {
       //print(e.toString());
     } finally {
+      getActivitiesFromToday();
       loading(false);
     }
   }
@@ -60,6 +61,7 @@ class ActivitiesController extends GetxController {
 
   void addActivity(String action, String notes, int id) async {
     try {
+      loading(true);
       var url = Uri.parse("http://10.0.2.2:5000/Activities/add");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
       var requestBody =
@@ -78,7 +80,13 @@ class ActivitiesController extends GetxController {
         var activityList = ActivityResponse.fromJson(jsonDecode(response.body));
         activities.value = activityList.activities;
         count.value = activityList.count;
-        //print("dobzie");
+        /*newActivities.value = activityList.activities.where((element) =>
+            element.postTime!.substring(0, 10).replaceAll('T', ' ') ==
+            date.value)
+        .toList();*/
+        getActivitiesByDate();
+        print(activities.length);
+        print(newActivities.length);
       }
       if (response.statusCode == 401) {
         ac.logOut();
@@ -87,7 +95,7 @@ class ActivitiesController extends GetxController {
     } catch (e) {
       print(e.toString());
     } finally {
-      getActivitiesByDate();
+      loading(false);
     }
   }
 
@@ -165,11 +173,18 @@ class ActivitiesController extends GetxController {
   }
 
   void getActivitiesByDate() {
-    newActivities.value = returnActivities();
-    newActivities.value = newActivities.value
+    newActivities.value = returnActivities()
         .where((element) =>
             element.postTime!.substring(0, 10).replaceAll('T', ' ') ==
             date.value)
+        .toList();
+  }
+
+  void getActivitiesFromToday() {
+    newActivities.value = returnActivities()
+        .where((element) =>
+            element.postTime!.substring(0, 10).replaceAll('T', ' ') ==
+            DateTime.now().toString().substring(0, 10))
         .toList();
   }
 }

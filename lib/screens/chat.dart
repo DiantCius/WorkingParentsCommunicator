@@ -52,16 +52,23 @@ class _ChatState extends State<Chat> {
                 Get.defaultDialog(
                     title: 'List of ${cc.currentChat.value.name!} users',
                     content: Container(
-                        width: MediaQuery.of(context).size.width-40,
-                        height: MediaQuery.of(context).size.height -400,
+                        width: MediaQuery.of(context).size.width - 40,
+                        height: MediaQuery.of(context).size.height - 400,
                         child: Obx(
                           () => ListView.builder(
                             itemCount: cuc.chatUserList.length,
                             itemBuilder: (context, i) {
                               return ListTile(
                                 title: Text('${cuc.chatUserList[i].username}'),
-                                trailing: uc.currentUser.value.username == cc.currentChat.value.username && uc.currentUser.value.username != cuc.chatUserList[i].username ? ElevatedButton(
+                                trailing: uc.currentUser.value.username ==
+                                            cc.currentChat.value.username &&
+                                        uc.currentUser.value.username !=
+                                            cuc.chatUserList[i].username
+                                    ? ElevatedButton(
                                         onPressed: () {
+                                          cuc.deleteUserFromChat(
+                                              cc.currentChat.value.chatId!,
+                                              cuc.chatUserList[i].email!);
                                         },
                                         child: Text(
                                           'Kick',
@@ -69,7 +76,8 @@ class _ChatState extends State<Chat> {
                                               color: Colors.white,
                                               fontSize: 16.0),
                                         ),
-                                      ) : Text(''),
+                                      )
+                                    : Text(''),
                               );
                             },
                           ),
@@ -79,74 +87,81 @@ class _ChatState extends State<Chat> {
           ],
           title: Text('${cc.currentChat.value.name}'),
         ),
-        body: Obx(
-          () => Column(
-            children: [
-              Expanded(
-                child: ListView.separated(
-                  controller: scrollController,
-                  itemCount: mc.messageList.length,
-                  itemBuilder: (context, i) {
-                    return ListTile(
-                      title: Text(
-                        mc.messageList[i].isMine
-                            ? mc.messageList[i].message!
-                            : mc.messageList[i].name! +
-                                ': ' +
-                                mc.messageList[i].message!,
-                        textAlign: mc.messageList[i].isMine
-                            ? TextAlign.end
-                            : TextAlign.start,
-                      ),
-                    );
-                  },
-                  separatorBuilder: (_, i) {
-                    return Divider(
-                      thickness: 2,
-                    );
-                  },
-                ),
-              ),
-              /*ElevatedButton(
-            onPressed: () {
-              //signalR.connect(receiveGroupMessageHandler);
-              signalR.joinRoom('pokoj');
-            },
-            child: Text('join group'),
-          ),*/
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: txtController,
-                    decoration: InputDecoration(
-                      hintText: 'Send Message',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: Colors.lightBlue,
+        body: Obx(() {
+          if (cc.loading.isTrue)
+            return CircularProgressIndicator();
+          else if (cc.count.value == 0)
+            return Center(
+              child: Text("You haven't started any chat yet"),
+            );
+          else
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    controller: scrollController,
+                    itemCount: mc.messageList.length,
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                        title: Text(
+                          mc.messageList[i].isMine
+                              ? mc.messageList[i].message!
+                              : mc.messageList[i].name! +
+                                  ': ' +
+                                  mc.messageList[i].message!,
+                          textAlign: mc.messageList[i].isMine
+                              ? TextAlign.end
+                              : TextAlign.start,
                         ),
-                        onPressed: () {
-                          //signalR..sendMessage('chuj', txtController.text);
-                          signalR
-                            ..sendGroupMessage(
-                                cc.currentChat.value.name!,
-                                '${uc.currentUser.value.username}',
-                                txtController.text);
-                          mc.createMessage(
-                              txtController.text, cc.currentChat.value.chatId!);
-                          txtController.clear();
-                          scrollController.jumpTo(
-                              scrollController.position.maxScrollExtent + 75);
-                        },
+                      );
+                    },
+                    separatorBuilder: (_, i) {
+                      return Divider(
+                        thickness: 2,
+                      );
+                    },
+                  ),
+                ),
+                /*ElevatedButton(
+              onPressed: () {
+                //signalR.connect(receiveGroupMessageHandler);
+                signalR.joinRoom('pokoj');
+              },
+              child: Text('join group'),
+            ),*/
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: txtController,
+                      decoration: InputDecoration(
+                        hintText: 'Send Message',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.send,
+                            color: Colors.lightBlue,
+                          ),
+                          onPressed: () {
+                            //signalR..sendMessage('chuj', txtController.text);
+                            signalR
+                              ..sendGroupMessage(
+                                  cc.currentChat.value.name!,
+                                  '${uc.currentUser.value.username}',
+                                  txtController.text);
+                            mc.createMessage(
+                                txtController.text, cc.currentChat.value.chatId!);
+                            txtController.clear();
+                            scrollController.jumpTo(
+                                scrollController.position.maxScrollExtent + 75);
+                          },
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ));
+              ],
+            );
+        }));
   }
 
   @override

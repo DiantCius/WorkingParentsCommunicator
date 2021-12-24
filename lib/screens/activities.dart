@@ -5,8 +5,6 @@ import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/activities_response.dart';
 import 'package:get/get.dart';
 
-enum DefinedActivities { harder, smarter, selfStarter, tradingCharter }
-
 class Activities extends StatefulWidget {
   const Activities({Key? key}) : super(key: key);
 
@@ -25,18 +23,99 @@ class _ActivitiesState extends State<Activities> {
   @override
   void initState() {
     super.initState();
-    getInitialActivities();
+    act.getActivities(cc.currentChild.value.childId!);
+    act.date.value = DateTime.now().toString().substring(0, 10);
   }
 
   void getInitialActivities() {
     act.getActivities(cc.currentChild.value.childId!);
-    act.newActivities.value = act
-        .returnActivities()
-        .where((element) =>
-            element.postTime!.substring(0, 10).replaceAll('T', ' ') ==
-            DateTime.now().toString().substring(0, 10))
-        .toList();
     print(act.newActivities.value);
+  }
+
+  void _openAddActivityDialog() {
+    Get.defaultDialog(
+        title: '',
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: activityController,
+              keyboardType: TextInputType.text,
+              maxLines: 2,
+              decoration: InputDecoration(
+                  labelText: 'Activity',
+                  hintMaxLines: 1,
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 4.0))),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: notesController,
+              keyboardType: TextInputType.text,
+              maxLines: 2,
+              decoration: InputDecoration(
+                  labelText: 'Notes',
+                  hintMaxLines: 1,
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 4.0))),
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                act.addActivity(activityController.text, notesController.text,
+                    cc.currentChild.value.childId!);
+                //act.getActivities(cc.currentChild.value.childId!);
+                Get.back();
+                activityController.clear();
+                notesController.clear();
+              },
+              child: Text(
+                'ADD ACTIVITY',
+                style: TextStyle(color: Colors.white, fontSize: 16.0),
+              ),
+            )
+          ],
+        ),
+        radius: 10.0);
+  }
+
+  void openAddActivityDialog(String value) {
+    Get.defaultDialog(
+        title: value,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 10),
+            TextField(
+              controller: notesController,
+              keyboardType: TextInputType.text,
+              maxLines: 2,
+              decoration: InputDecoration(
+                  labelText: 'Notes',
+                  hintMaxLines: 1,
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 4.0))),
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                act.addActivity(value, notesController.text,
+                    cc.currentChild.value.childId!);
+                Get.back();
+                notesController.clear();
+              },
+              child: Text(
+                'ADD ACTIVITY',
+                style: TextStyle(color: Colors.white, fontSize: 16.0),
+              ),
+            )
+          ],
+        ),
+        radius: 10.0);
   }
 
   @override
@@ -203,88 +282,70 @@ class _ActivitiesState extends State<Activities> {
                               ));
                         })),
                 FloatingActionButton.extended(
-                  onPressed: () {
-                    Get.defaultDialog(
-                        title: '',
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextField(
-                              controller: activityController,
-                              keyboardType: TextInputType.text,
-                              maxLines: 2,
-                              decoration: InputDecoration(
-                                  labelText: 'Activity',
-                                  hintMaxLines: 1,
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.green, width: 4.0))),
-                            ),
-                            SizedBox(height: 10),
-                            TextField(
-                              controller: notesController,
-                              keyboardType: TextInputType.text,
-                              maxLines: 2,
-                              decoration: InputDecoration(
-                                  labelText: 'Notes',
-                                  hintMaxLines: 1,
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.green, width: 4.0))),
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                act.addActivity(
-                                    activityController.text,
-                                    notesController.text,
-                                    cc.currentChild.value.childId!);
-                                //act.getActivities(cc.currentChild.value.childId!);
-                                Get.back();
-                                activityController.clear();
-                              },
-                              child: Text(
-                                'ADD ACTIVITY',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16.0),
-                              ),
-                            )
-                          ],
-                        ),
-                        radius: 10.0);
-                  },
+                  onPressed: _openAddActivityDialog,
                   label: Text("Add Activity"),
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
                 ),
                 PopupMenuButton(
-                  iconSize: 50,
-                  icon: Icon(Icons.plus_one),
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<DefinedActivities>>[
-                    const PopupMenuItem<DefinedActivities>(
-                      value: DefinedActivities.harder,
-                      child: Text('Working a lot harder'),
-                    ),
-                    const PopupMenuItem<DefinedActivities>(
-                      value: DefinedActivities.smarter,
-                      child: Text('Being a lot smarter'),
-                    ),
-                    const PopupMenuItem<DefinedActivities>(
-                      value: DefinedActivities.selfStarter,
-                      child: Text('Being a self-starter'),
-                    ),
-                    const PopupMenuItem<DefinedActivities>(
-                      value: DefinedActivities.tradingCharter,
-                      child: Text('Placed in charge of trading charter'),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                    iconSize: 70,
+                    icon: Icon(Icons.add_circle_rounded, color: Colors.blue[500]),
+                    onSelected: (String value) {
+                      openAddActivityDialog(value);
+                    },
+                    itemBuilder: (BuildContext context) => [
+                          PopupMenuItem(
+                            child: ListTile(
+                              trailing: Icon(Icons.baby_changing_station),
+                              title: Text('Diaper change'),
+                            ),
+                            value: 'Diaper change',
+                          ),
+                          PopupMenuItem(
+                              child: ListTile(
+                                trailing: Icon(Icons.child_friendly),
+                                title: Text('Walk'),
+                              ),
+                              value: 'Walk'),
+                          PopupMenuItem(
+                              child: ListTile(
+                                trailing: Icon(Icons.food_bank),
+                                title: Text('Feeding'),
+                              ),
+                              value: 'Feeding'),
+                          PopupMenuItem(
+                              child: ListTile(
+                                trailing: Icon(Icons.work),
+                                title: Text('Working a lot harder'),
+                              ),
+                              value: '4'),
+                          PopupMenuItem(
+                              child: ListTile(
+                                trailing: Icon(Icons.work),
+                                title: Text('Working a lot harder'),
+                              ),
+                              value: '5'),
+                          PopupMenuItem(
+                              child: ListTile(
+                                trailing: Icon(Icons.send),
+                                title: Container(
+                                  height: 45,
+                                  child: TextField(
+                                    controller: activityController,
+                                    keyboardType: TextInputType.text,
+                                    maxLines: 1,
+                                    decoration: InputDecoration(
+                                        labelText: 'Other',
+                                        hintMaxLines: 1,
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.green,
+                                                width: 4.0))),
+                                              ),
+                                ),
+                              ),
+                              value: activityController.text),
+                        ]),
               ],
             );
         }));

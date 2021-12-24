@@ -12,7 +12,6 @@ class ChatsResponse {
   factory ChatsResponse.fromJson(Map<String, dynamic> json) {
 
     var list = json['chats'] as List;
-    print(list.runtimeType);
     List<Chat> chatList = list.map((i) => Chat.fromJson(i)).toList();
 
     return ChatsResponse(

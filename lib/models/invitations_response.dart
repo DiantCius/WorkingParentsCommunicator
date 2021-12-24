@@ -12,7 +12,6 @@ class InvitationsResponse {
   factory InvitationsResponse.fromJson(Map<String, dynamic> json) {
 
     var list = json['invitations'] as List;
-    print(list.runtimeType);
     List<Invitation> babysitterList = list.map((i) => Invitation.fromJson(i)).toList();
 
     return InvitationsResponse(

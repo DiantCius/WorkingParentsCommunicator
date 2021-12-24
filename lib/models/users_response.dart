@@ -12,7 +12,6 @@ class UsersResponse {
   factory UsersResponse.fromJson(Map<String, dynamic> json) {
 
     var list = json['users'] as List;
-    print(list.runtimeType);
     List<User> userList = list.map((i) => User.fromJson(i)).toList();
 
     return UsersResponse(

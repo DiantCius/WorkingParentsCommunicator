@@ -110,6 +110,35 @@ class ChatUsersController extends GetxController {
     }
   }
 
+  void deleteUserFromChat(int chatId, String email) async {
+    try {
+      var url =
+          Uri.parse("http://10.0.2.2:5000/Chats/users/delete?chatId=$chatId&email=$email");
+      String token = '';
+      await storage
+          .read(key: 'jwt')
+          .then((value) => {if (value != null) token = value});
+
+      final response = await http.delete(url, headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        var newChatUserList =
+            ChatUsersResponse.fromJson(jsonDecode(response.body));
+        chatUserList.value = newChatUserList.chatUsers;
+      }
+      if (response.statusCode == 401) {
+        ac.logOut();
+        Get.toNamed("/login");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+    }
+  }
+
   List<ChatUser> returnUsers() {
     return users.value;
   }

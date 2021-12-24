@@ -21,12 +21,7 @@ class _ChatsState extends State<Chats> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(" chats"),
-        ),
-        body: Obx(() {
+    return Obx(() {
           if (cc.loading.isTrue)
             return CircularProgressIndicator();
           else
@@ -98,6 +93,6 @@ class _ChatsState extends State<Chats> {
                 ),
               ],
             );
-        }));
+        });
   }
 }

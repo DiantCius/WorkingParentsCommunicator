@@ -103,7 +103,8 @@ class _BabysittersState extends State<Babysitters> {
                    Get.toNamed('/searchBabysitters');
                   },
                   label: Text("Invite Babysitter"),
-                  icon: const Icon(Icons.note_add),
+                  icon: const Icon(Icons.add,
+                  size: 40),
                   backgroundColor: Colors.blue,
                 ),
                 SizedBox(
