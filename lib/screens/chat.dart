@@ -30,8 +30,7 @@ class _ChatState extends State<Chat> {
         name: args[0],
         message: args[1],
         isMine: args[0] == uc.currentUser.value.username));
-    scrollController.jumpTo(scrollController.position.maxScrollExtent + 75);
-    setState(() {});
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
-import 'package:flutter_client/models/auth_response.dart';
 import 'package:flutter_client/models/error_response.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +22,6 @@ class ForgotPassword extends StatelessWidget {
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
                 child: Container(
-                  width: 200,
                   height: 150,
                 ),
               ),
@@ -43,19 +41,22 @@ class ForgotPassword extends StatelessWidget {
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
               onPressed: () {
                 ac.forgotPassword(emailController.text).then((value) => {
-                        if (value is ErrorResponse)
-                          Get.defaultDialog(middleText: value.message)
-                        else
-                          {
-                            Get.back(),
-                            Get.defaultDialog(middleText: "New password was sent on your email")           
-                          }
-                      });
-                  emailController.clear();
+                      if (value is ErrorResponse)
+                        Get.defaultDialog(middleText: value.message)
+                      else
+                        {
+                          Get.back(),
+                          Get.defaultDialog(
+                              middleText: "New password was sent on your email")
+                        }
+                    });
+                emailController.clear();
               },
               child: Text(
                 'Reset Password',

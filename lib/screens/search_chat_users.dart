@@ -24,7 +24,7 @@ class _SearchChatUsersState extends State<SearchChatUsers> {
     //cuc.getCurrentUser();
   }
 
-  onSearchFieldChanged(String value) {
+  _onSearch(String value) {
     if (value.isEmpty) {
       cuc.newUserList.value = cuc.returnUsers();
     } else {
@@ -38,14 +38,13 @@ class _SearchChatUsersState extends State<SearchChatUsers> {
   Widget _buildTitle() {
     if (isSearchOpened.isTrue)
       return TextField(
-        controller: searchController,
         keyboardType: TextInputType.text,
         maxLines: 1,
+        controller: searchController,
         decoration: InputDecoration(
           labelText: 'Search...',
-          hintMaxLines: 1,
         ),
-        onChanged: onSearchFieldChanged,
+        onChanged: _onSearch,
       );
     else
       return Text(

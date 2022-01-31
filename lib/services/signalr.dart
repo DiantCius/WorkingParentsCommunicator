@@ -15,12 +15,6 @@ class SignalRService {
     hubConnection.start()?.then((value) => {
           hubConnection.invoke('JoinRoom', args: [name])
         });
-
-    /*if (hubConnection.state != HubConnectionState.connected) {
-      hubConnection.start()?.then((value) => {
-        hubConnection.invoke('JoinRoom', args: [name])
-      });
-    }*/
   }
 
   void disconnect() {
@@ -30,17 +24,4 @@ class SignalRService {
   void sendGroupMessage(String group, String name, String message) {
     hubConnection.invoke('SendMessageToGroup', args: [group, name, message]);
   }
-
-  /*void sendMessage(String name, String message) {
-    hubConnection.invoke('SendMessage', args: [name, message]);
-    //textMessage = '';
-    print(hubConnection.state);
-  }*/
-
-  /*void joinRoom(String name) async {
-    //if (hubConnection.state == HubConnectionState.connected) {
-    await hubConnection.invoke('JoinRoom', args: [name]);
-    //}
-  }*/
-
 }
