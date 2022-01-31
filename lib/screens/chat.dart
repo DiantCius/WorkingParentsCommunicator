@@ -34,6 +34,20 @@ class _ChatState extends State<Chat> {
   }
 
   @override
+  void initState() {
+    signalR.connect(messageHandler, cc.currentChat.value.name!);
+    mc.getMessages(cc.currentChat.value.chatId!);
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    scrollController.dispose();
+    signalR.disconnect();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -182,19 +196,5 @@ class _ChatState extends State<Chat> {
               ],
             );
         }));
-  }
-
-  @override
-  void initState() {
-    signalR.connect(messageHandler, cc.currentChat.value.name!);
-    mc.getMessages(cc.currentChat.value.chatId!);
-  }
-
-  @override
-  void dispose() {
-    textController.dispose();
-    scrollController.dispose();
-    signalR.disconnect();
-    super.dispose();
   }
 }
