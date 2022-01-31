@@ -107,6 +107,7 @@ class _ActivitiesState extends State<Activities> {
                     cc.currentChild.value.childId!);
                 Get.back();
                 notesController.clear();
+                activityController.clear();
               },
               child: Text(
                 'ADD ACTIVITY',
@@ -186,7 +187,8 @@ class _ActivitiesState extends State<Activities> {
                                 },
                                 onTap: () {},
                                 title:
-                                    Text("${act.newActivities[index].action}"),
+                                    Text("${act.newActivities[index].action}",
+                                    textScaleFactor: 2,),
                                 subtitle: Column(
                                   children: <Widget>[
                                     Text("${act.newActivities[index].notes}"),
@@ -281,15 +283,16 @@ class _ActivitiesState extends State<Activities> {
                                 ),
                               ));
                         })),
-                FloatingActionButton.extended(
+                /*FloatingActionButton.extended(
                   onPressed: _openAddActivityDialog,
                   label: Text("Add Activity"),
                   icon: const Icon(Icons.note_add),
                   backgroundColor: Colors.blue,
-                ),
+                ),*/
                 PopupMenuButton(
                     iconSize: 70,
-                    icon: Icon(Icons.add_circle_rounded, color: Colors.blue[500]),
+                    icon:
+                        Icon(Icons.add_circle_rounded, color: Colors.blue[500]),
                     onSelected: (String value) {
                       openAddActivityDialog(value);
                     },
@@ -297,7 +300,7 @@ class _ActivitiesState extends State<Activities> {
                           PopupMenuItem(
                             child: ListTile(
                               trailing: Icon(Icons.baby_changing_station),
-                              title: Text('Diaper change'),
+                              title: Text('Diaper'),
                             ),
                             value: 'Diaper change',
                           ),
@@ -310,21 +313,27 @@ class _ActivitiesState extends State<Activities> {
                           PopupMenuItem(
                               child: ListTile(
                                 trailing: Icon(Icons.food_bank),
-                                title: Text('Feeding'),
+                                title: Text('Meal'),
                               ),
-                              value: 'Feeding'),
+                              value: 'Meal'),
                           PopupMenuItem(
                               child: ListTile(
-                                trailing: Icon(Icons.work),
-                                title: Text('Working a lot harder'),
+                                trailing: Icon(Icons.battery_full),
+                                title: Text('Bottle'),
                               ),
-                              value: '4'),
+                              value: 'Bottle'),
                           PopupMenuItem(
                               child: ListTile(
-                                trailing: Icon(Icons.work),
-                                title: Text('Working a lot harder'),
+                                trailing: Icon(Icons.access_time),
+                                title: Text('Nap'),
                               ),
-                              value: '5'),
+                              value: 'Nap'),
+                          PopupMenuItem(
+                              child: ListTile(
+                                trailing: Icon(Icons.accessibility),
+                                title: Text('Incident'),
+                              ),
+                              value: 'Incident'),
                           PopupMenuItem(
                               child: ListTile(
                                 trailing: Icon(Icons.send),
@@ -341,7 +350,7 @@ class _ActivitiesState extends State<Activities> {
                                             borderSide: BorderSide(
                                                 color: Colors.green,
                                                 width: 4.0))),
-                                              ),
+                                  ),
                                 ),
                               ),
                               value: activityController.text),

@@ -142,4 +142,5 @@ class ChatUsersController extends GetxController {
   List<ChatUser> returnUsers() {
     return users.value;
   }
+
 }

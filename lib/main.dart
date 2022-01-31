@@ -5,6 +5,7 @@ import 'package:flutter_client/screens/activities.dart';
 import 'package:flutter_client/screens/babysitters.dart';
 import 'package:flutter_client/screens/chat.dart';
 import 'package:flutter_client/screens/chats.dart';
+import 'package:flutter_client/screens/forgot_password.dart';
 import 'package:flutter_client/screens/home.dart';
 import 'package:flutter_client/screens/invitations.dart';
 import 'package:flutter_client/screens/login.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => Home(), binding: HomeBinding()),
         GetPage(name: '/login', page: () => Login()),
         GetPage(name: '/signup', page: () => Signup()),
+        GetPage(name: '/forgotPassword', page: () => ForgotPassword()),
         GetPage(name: '/activities', page: () => Activities()),
         GetPage(name: '/searchBabysitters', page: () => SearchBabysitters()),
         GetPage(name: '/babysitters', page: () => Babysitters()),

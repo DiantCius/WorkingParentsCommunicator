@@ -11,12 +11,37 @@ import 'package:http/http.dart' as http;
 class BabysittersController extends GetxController {
   var loading = true.obs;
   var count = 0.obs;
+  int a = 5;
   var babysitters = <Babysitter>[].obs;
   var currentBabysitter = Babysitter().obs;
   final FlutterSecureStorage storage = Get.find();
   final AuthController ac = Get.find();
 
   void getBabysittersForChild(int id) async {
+    loading(true);
+    var url = Uri.parse("http://10.0.2.2:5000/Babysitters?id=$id");
+    var token = await storage.read(key: 'jwt');
+
+    final response = await http.get(url, headers: {
+      "Accept": "application/json",
+      "content-type": "application/json",
+      "Authorization": "Bearer $token"
+    });
+
+    if (response.statusCode == 200) {
+      var babysitterList =
+          BabysittersResponse.fromJson(jsonDecode(response.body));
+      babysitters(babysitterList.babysitters);
+      count(babysitterList.count);
+    }
+    if (response.statusCode == 401) {
+      ac.logOut();
+      Get.toNamed("/login");
+    }
+    loading(false);
+  }
+
+  /*void getBabysittersForChild(int id) async {
     try {
       loading(true);
       var url = Uri.parse("http://10.0.2.2:5000/Babysitters?id=$id");
@@ -41,12 +66,10 @@ class BabysittersController extends GetxController {
         ac.logOut();
         Get.toNamed("/login");
       }
-    } catch (e) {
-      //print(e.toString());
-    } finally {
+    } catch (e) {} finally {
       loading(false);
     }
-  }
+  }*/
 
   Future addBabysitterToChild(int childId, String personEmail) async {
     try {

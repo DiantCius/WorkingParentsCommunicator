@@ -27,7 +27,7 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
     uc.getCurrentUser();
   }
 
-  onSearchFieldChanged(String value) {
+  _onSearch(String value) {
     if (value.isEmpty) {
       uc.newUserList.value = uc.returnUsers();
     } else {
@@ -41,14 +41,13 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
   Widget _buildTitle() {
     if (isSearchOpened.isTrue)
       return TextField(
-        controller: searchController,
         keyboardType: TextInputType.text,
         maxLines: 1,
+        controller: searchController,
         decoration: InputDecoration(
           labelText: 'Search...',
-          hintMaxLines: 1,
         ),
-        onChanged: onSearchFieldChanged,
+        onChanged: _onSearch,
       );
     else
       return Text(
@@ -121,27 +120,34 @@ class _SearchBabysittersState extends State<SearchBabysitters> {
                               Text(uc.newUserList[index].email!),
                             ],
                           ),
-                          trailing: uc.newUserList[index].invitedBy == uc.currentUser.value.email ? Text('Already invited') : TextButton(
-                            onPressed: () {
-                              uc.currentListUser.value = uc.newUserList[index];
-                              uc.createInvitation(cc.currentChild.value.childId!,uc.currentListUser.value.email!).then((value) => {
-                                if (value is ErrorResponse)
-                                  {
-                                    Get.defaultDialog(
-                                        middleText: value.message)
-                                  }
-                                else
-                                  {print('ok')}
-                              });
-                            },
-                            child: Text('Invite'),
-                          )
-                      ));
+                          trailing: uc.newUserList[index].invitedBy ==
+                                  uc.currentUser.value.email
+                              ? Text('Already invited')
+                              : TextButton(
+                                  onPressed: () {
+                                    uc.currentListUser.value =
+                                        uc.newUserList[index];
+                                    uc
+                                        .createInvitation(
+                                            cc.currentChild.value.childId!,
+                                            uc.currentListUser.value.email!)
+                                        .then((value) => {
+                                              if (value is ErrorResponse)
+                                                {
+                                                  Get.defaultDialog(
+                                                      middleText: value.message)
+                                                }
+                                              else
+                                                {print('ok')}
+                                            });
+                                  },
+                                  child: Text('Invite'),
+                                )));
                     },
                   ),
                 ),
-                Text(uc.newUserList.first.username!),
-                Text(uc.currentUser.value.email!)
+                //Text(uc.newUserList.first.username!),
+                //PText(uc.currentUser.value.email!)
               ],
             );
         }

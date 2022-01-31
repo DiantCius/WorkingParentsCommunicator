@@ -53,7 +53,7 @@ class InvitationsController extends GetxController {
 
   Future getUserById(int id) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/User/details?id=$id");
+      var url = Uri.parse("http://10.0.2.2:5000/Users/details?id=$id");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -170,5 +170,4 @@ class InvitationsController extends GetxController {
       print(e.toString());
     } finally {}
   }
-
 }

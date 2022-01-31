@@ -32,7 +32,8 @@ class AuthController extends GetxController {
         storage.write(key: 'jwt', value: authResponse.user.token);
         isLoggedIn(true);
         return authResponse;
-      }if (response.statusCode == 401) {
+      }
+      if (response.statusCode == 401) {
         logOut();
         Get.toNamed("/login");
       } else {
@@ -60,6 +61,29 @@ class AuthController extends GetxController {
         storage.write(key: 'jwt', value: authResponse.user.token);
         isLoggedIn(true);
         return authResponse;
+      } else {
+        isLoggedIn(false);
+        var errorResponse = ErrorResponse.fromJson(jsonDecode(response.body));
+        return errorResponse;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future forgotPassword(String email) async {
+    var url = Uri.parse("http://10.0.2.2:5000/Users/password");
+    var requestBody = jsonEncode({
+      'email': email,
+    });
+    try {
+      final response = await http.post(url, body: requestBody, headers: {
+        "Accept": "application/json",
+        "content-type": "application/json"
+      });
+      if (response.statusCode == 200) {
+        //var authResponse = AuthResponse.fromJson(jsonDecode(response.body));
+        return "ok";
       } else {
         isLoggedIn(false);
         var errorResponse = ErrorResponse.fromJson(jsonDecode(response.body));

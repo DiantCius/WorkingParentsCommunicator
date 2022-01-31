@@ -128,7 +128,7 @@ class UsersController extends GetxController {
   void getCurrentUser() async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/User");
+      var url = Uri.parse("http://10.0.2.2:5000/Users/user");
       String token = '';
       await storage
           .read(key: 'jwt')

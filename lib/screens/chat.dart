@@ -21,11 +21,11 @@ class _ChatState extends State<Chat> {
   final MessagesController mc = Get.find();
   final ChatUsersController cuc = Get.find();
   var scrollController = ScrollController();
-  var txtController = TextEditingController();
-  SignalR signalR = new SignalR();
+  var textController = TextEditingController();
+  SignalRService signalR = new SignalRService();
   final UsersController uc = Get.find();
 
-  receiveMessageHandler(args) {
+  messageHandler(args) {
     mc.messageList.add(Message(
         name: args[0],
         message: args[1],
@@ -84,6 +84,35 @@ class _ChatState extends State<Chat> {
                         )));
               },
             ),
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () {
+                Get.defaultDialog(
+                    title: '',
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Do you wish to leave chat?"),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            cc.leaveChat(cc.currentChat.value.chatId!);
+                            Get.back();
+                            Get.back();
+                          },
+                          child: Text(
+                            'Leave chat',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16.0),
+                          ),
+                        )
+                      ],
+                    ),
+                    radius: 10.0);
+              },
+            ),
           ],
           title: Text('${cc.currentChat.value.name}'),
         ),
@@ -122,18 +151,11 @@ class _ChatState extends State<Chat> {
                     },
                   ),
                 ),
-                /*ElevatedButton(
-              onPressed: () {
-                //signalR.connect(receiveGroupMessageHandler);
-                signalR.joinRoom('pokoj');
-              },
-              child: Text('join group'),
-            ),*/
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
-                      controller: txtController,
+                      controller: textController,
                       decoration: InputDecoration(
                         hintText: 'Send Message',
                         suffixIcon: IconButton(
@@ -142,15 +164,14 @@ class _ChatState extends State<Chat> {
                             color: Colors.lightBlue,
                           ),
                           onPressed: () {
-                            //signalR..sendMessage('chuj', txtController.text);
                             signalR
                               ..sendGroupMessage(
                                   cc.currentChat.value.name!,
                                   '${uc.currentUser.value.username}',
-                                  txtController.text);
-                            mc.createMessage(
-                                txtController.text, cc.currentChat.value.chatId!);
-                            txtController.clear();
+                                  textController.text);
+                            mc.createMessage(textController.text,
+                                cc.currentChat.value.chatId!);
+                            textController.clear();
                             scrollController.jumpTo(
                                 scrollController.position.maxScrollExtent + 75);
                           },
@@ -166,22 +187,13 @@ class _ChatState extends State<Chat> {
 
   @override
   void initState() {
-    signalR.connect(receiveMessageHandler, cc.currentChat.value.name!);
+    signalR.connect(messageHandler, cc.currentChat.value.name!);
     mc.getMessages(cc.currentChat.value.chatId!);
-    /*mc.getMessages(cc.currentChat.value.chatId!).then((value) {
-      signalR.messageList = value;
-      for (var message in signalR.messageList) {
-        message.isMine = message.name == uc.currentUser.value.username;
-      }
-    });
-    print(signalR.messageList.length);*/
-    //print('dupa');
-    //signalR.joinRoom("pokoj");
   }
 
   @override
   void dispose() {
-    txtController.dispose();
+    textController.dispose();
     scrollController.dispose();
     signalR.disconnect();
     super.dispose();

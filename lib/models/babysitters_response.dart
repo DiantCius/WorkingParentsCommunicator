@@ -10,9 +10,9 @@ class BabysittersResponse {
   });
 
   factory BabysittersResponse.fromJson(Map<String, dynamic> json) {
-
     var list = json['babysitters'] as List;
-    List<Babysitter> babysitterList = list.map((i) => Babysitter.fromJson(i)).toList();
+    List<Babysitter> babysitterList =
+        list.map((i) => Babysitter.fromJson(i)).toList();
 
     return BabysittersResponse(
       babysitters: babysitterList,

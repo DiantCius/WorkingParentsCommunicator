@@ -92,7 +92,7 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
   final childNameController = new TextEditingController();
   final dateOfBirthController = new TextEditingController();
 
-  int _currentIndex = 0;
+  //int _currentIndex = 0;
   List _screens = [Children(), Chats(), Invitations()];
 
   @override
@@ -102,11 +102,11 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
     uc.getCurrentUser();
   }
 
-  void _setCurrentIndex(int value) {
+  /*void _setCurrentIndex(int value) {
     setState(() {
       _currentIndex = value;
     });
-  }
+  }*/
 
   Widget customDrawer() {
     return Container(
@@ -160,10 +160,10 @@ class _HomeUnlockedState extends State<HomeUnlocked> {
           drawer: customDrawer(),
           body: _screens[hc.index.value],
           bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: Colors.blue[700],
+            iconSize: 28,
             selectedFontSize: 12,
             unselectedFontSize: 12,
-            iconSize: 28,
+            selectedItemColor: Colors.blue[700],
             type: BottomNavigationBarType.fixed,
             currentIndex: hc.index.value,
             onTap: hc.setIndex,

@@ -73,4 +73,33 @@ class ChatsController extends GetxController {
       print(e.toString());
     }
   }
+
+  void leaveChat(int chatId) async {
+    try {
+      var url =
+          Uri.parse("http://10.0.2.2:5000/Chats/users/leave?chatId=$chatId");
+      String token = '';
+      await storage
+          .read(key: 'jwt')
+          .then((value) => {if (value != null) token = value});
+
+      final response = await http.delete(url, headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      if (response.statusCode == 200) {
+        var chatList = ChatsResponse.fromJson(jsonDecode(response.body));
+        chats.value = chatList.chats;
+        count.value = chatList.count;
+      }
+      if (response.statusCode == 401) {
+        ac.logOut();
+        Get.toNamed("/login");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+    }
+  }
 }
