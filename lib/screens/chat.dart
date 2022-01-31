@@ -22,7 +22,7 @@ class _ChatState extends State<Chat> {
   final ChatUsersController cuc = Get.find();
   var scrollController = ScrollController();
   var textController = TextEditingController();
-  SignalRService signalR = new SignalRService();
+  SignalRService signalRService = new SignalRService();
   final UsersController uc = Get.find();
 
   messageHandler(args) {
@@ -35,7 +35,7 @@ class _ChatState extends State<Chat> {
 
   @override
   void initState() {
-    signalR.connect(messageHandler, cc.currentChat.value.name!);
+    signalRService.connect(messageHandler, cc.currentChat.value.name!);
     mc.getMessages(cc.currentChat.value.chatId!);
   }
 
@@ -43,7 +43,7 @@ class _ChatState extends State<Chat> {
   void dispose() {
     textController.dispose();
     scrollController.dispose();
-    signalR.disconnect();
+    signalRService.disconnect();
     super.dispose();
   }
 
@@ -177,11 +177,10 @@ class _ChatState extends State<Chat> {
                             color: Colors.lightBlue,
                           ),
                           onPressed: () {
-                            signalR
-                              ..sendGroupMessage(
-                                  cc.currentChat.value.name!,
-                                  '${uc.currentUser.value.username}',
-                                  textController.text);
+                            signalRService.sendGroupMessage(
+                                cc.currentChat.value.name!,
+                                '${uc.currentUser.value.username}',
+                                textController.text);
                             mc.createMessage(textController.text,
                                 cc.currentChat.value.chatId!);
                             textController.clear();
