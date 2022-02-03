@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/controllers/users_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/message.dart';
 import 'package:flutter_client/models/messages_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,7 +21,7 @@ class MessagesController extends GetxController {
   void getMessages(int chatId) async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Chats/messages?chatId=$chatId");
+      var url = Uri.parse("$serverUrl/Chats/messages?chatId=$chatId");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -36,7 +37,7 @@ class MessagesController extends GetxController {
             MessagesResponse.fromJson(jsonDecode(response.body));
         messageList.value = oldMessageList.messages;
         for (var message in messageList) {
-        message.isMine = message.name == uc.currentUser.value.username;
+          message.isMine = message.name == uc.currentUser.value.username;
         }
       }
       if (response.statusCode == 401) {
@@ -52,8 +53,8 @@ class MessagesController extends GetxController {
 
   void createMessage(String text, int chatId) async {
     try {
-      var url = Uri.parse(
-          "http://10.0.2.2:5000/Chats/messages/add?text=$text&chatId=$chatId");
+      var url =
+          Uri.parse("$serverUrl/Chats/messages/add?text=$text&chatId=$chatId");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
       String token = '';
       await storage

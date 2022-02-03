@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/child.dart';
 import 'package:flutter_client/models/children_response.dart';
 import 'package:flutter_client/models/error_response.dart';
@@ -46,8 +47,7 @@ class ChildrenController extends GetxController {
   void getChildren() async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Children");
-      //var url = Uri.parse("http://127.0.0.1:5000/Children");
+      var url = Uri.parse("$serverUrl/Children");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -75,7 +75,7 @@ class ChildrenController extends GetxController {
 
   void addChild(String name, String birthDate) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Children/add");
+      var url = Uri.parse("$serverUrl/Children/add");
       var requestBody = jsonEncode({'name': name, 'birthDate': birthDate});
       String token = '';
       await storage
@@ -104,8 +104,7 @@ class ChildrenController extends GetxController {
 
   Future deleteChild(int childId) async {
     try {
-      var url =
-          Uri.parse("http://10.0.2.2:5000/Children/delete?childId=$childId");
+      var url = Uri.parse("$serverUrl/Children/delete?childId=$childId");
       String token = '';
       await storage
           .read(key: 'jwt')

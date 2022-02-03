@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/chat.dart';
 import 'package:flutter_client/models/chats_response.dart';
 import 'package:flutter_client/models/error_response.dart';
@@ -19,7 +20,7 @@ class ChatsController extends GetxController {
   void getChats() async {
     loading(true);
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Chats");
+      var url = Uri.parse("$serverUrl/Chats");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -48,7 +49,7 @@ class ChatsController extends GetxController {
 
   void addChat(String name) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Chats/add");
+      var url = Uri.parse("$serverUrl/Chats/add");
       var requestBody = jsonEncode(name);
       String token = '';
       await storage
@@ -76,8 +77,7 @@ class ChatsController extends GetxController {
 
   void leaveChat(int chatId) async {
     try {
-      var url =
-          Uri.parse("http://10.0.2.2:5000/Chats/users/leave?chatId=$chatId");
+      var url = Uri.parse("$serverUrl/Chats/users/leave?chatId=$chatId");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -99,7 +99,6 @@ class ChatsController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
-    } finally {
-    }
+    } finally {}
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/auth_response.dart';
 import 'package:flutter_client/models/error_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,8 +20,7 @@ class AuthController extends GetxController {
   }
 
   Future logIn(String email, String password) async {
-    var url = Uri.parse("http://10.0.2.2:5000/Users/login");
-    //var url = Uri.parse("http://192.168.100.8:5000/Users/login");
+    var url = Uri.parse("$serverUrl/Users/login");
     var requestBody = jsonEncode({'email': email, 'password': password});
     try {
       final response = await http.post(url, body: requestBody, headers: {
@@ -47,8 +47,7 @@ class AuthController extends GetxController {
   }
 
   Future signUp(String username, String email, String password) async {
-    var url = Uri.parse("http://10.0.2.2:5000/Users/register");
-    //var url = Uri.parse("http://192.168.100.8:5000/Users/register");
+    var url = Uri.parse("$serverUrl/Users/register");
     var requestBody = jsonEncode(
         {'username': username, 'email': email, 'password': password});
     try {
@@ -72,7 +71,7 @@ class AuthController extends GetxController {
   }
 
   Future forgotPassword(String email) async {
-    var url = Uri.parse("http://10.0.2.2:5000/Users/password");
+    var url = Uri.parse("$serverUrl/Users/password");
     var requestBody = jsonEncode({
       'email': email,
     });

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/child_response.dart';
 import 'package:flutter_client/models/error_response.dart';
 import 'package:flutter_client/models/invitation.dart';
@@ -23,7 +24,7 @@ class InvitationsController extends GetxController {
   void getInvitations() async {
     loading(true);
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Invitations");
+      var url = Uri.parse("$serverUrl/Invitations");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -53,7 +54,7 @@ class InvitationsController extends GetxController {
 
   Future getUserById(int id) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Users/details?id=$id");
+      var url = Uri.parse("$serverUrl/Users/details?id=$id");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -80,7 +81,7 @@ class InvitationsController extends GetxController {
 
   Future getChildById(int id) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Children/details?id=$id");
+      var url = Uri.parse("$serverUrl/Children/details?id=$id");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -108,7 +109,7 @@ class InvitationsController extends GetxController {
   Future acceptInvitation(int invitationId, String childName) async {
     try {
       var url = Uri.parse(
-          "http://10.0.2.2:5000/Invitations/accept?invitationId=$invitationId&childName=$childName");
+          "$serverUrl/Invitations/accept?invitationId=$invitationId&childName=$childName");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -141,7 +142,7 @@ class InvitationsController extends GetxController {
   Future declineInvitation(int invitationId, String childName) async {
     try {
       var url = Uri.parse(
-          "http://10.0.2.2:5000/Invitations/decline?invitationId=$invitationId&childName=$childName");
+          "$serverUrl/Invitations/decline?invitationId=$invitationId&childName=$childName");
       String token = '';
       await storage
           .read(key: 'jwt')

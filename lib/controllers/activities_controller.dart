@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/activities_response.dart';
 import 'package:flutter_client/models/activity.dart';
 import 'package:flutter_client/models/error_response.dart';
@@ -26,8 +27,7 @@ class ActivitiesController extends GetxController {
   void getActivities(int id) async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Activities?id=$id");
-      //var url = Uri.parse("http://127.0.0.1:5000/Activities?id=$id");
+      var url = Uri.parse("$serverUrl/Activities?id=$id");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -62,8 +62,7 @@ class ActivitiesController extends GetxController {
   void addActivity(String action, String notes, int id) async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Activities/add");
-      //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
+      var url = Uri.parse("$serverUrl/Activities/add");
       var requestBody =
           jsonEncode({'action': action, 'notes': notes, 'childId': id});
       String token = '';
@@ -102,7 +101,7 @@ class ActivitiesController extends GetxController {
   void deleteActivity(int activityId, int childId) async {
     try {
       var url = Uri.parse(
-          "http://10.0.2.2:5000/Activities/delete?activityId=$activityId&childId=$childId");
+          "$serverUrl/Activities/delete?activityId=$activityId&childId=$childId");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -133,8 +132,7 @@ class ActivitiesController extends GetxController {
   Future editActivity2(
       int activityId, int childId, String action, String notes) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Activities/edit");
-      //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
+      var url = Uri.parse("$serverUrl/Activities/edit");
       var requestBody = jsonEncode({
         'activityId': activityId,
         'childId': childId,

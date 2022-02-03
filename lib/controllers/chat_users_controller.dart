@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/chat_user.dart';
 import 'package:flutter_client/models/chat_users_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -21,7 +22,7 @@ class ChatUsersController extends GetxController {
   void getUsers(int chatId) async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Chats/users?chatId=$chatId");
+      var url = Uri.parse("$serverUrl/Chats/users?chatId=$chatId");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -52,8 +53,8 @@ class ChatUsersController extends GetxController {
   void addUserToChat(int chatId, String email) async {
     loading(true);
     try {
-      var url = Uri.parse(
-          "http://10.0.2.2:5000/Chats/users/add?chatId=$chatId&email=$email");
+      var url =
+          Uri.parse("$serverUrl/Chats/users/add?chatId=$chatId&email=$email");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -83,8 +84,7 @@ class ChatUsersController extends GetxController {
 
   void getChatUsers(int chatId) async {
     try {
-      var url =
-          Uri.parse("http://10.0.2.2:5000/Chats/chatusers?chatId=$chatId");
+      var url = Uri.parse("$serverUrl/Chats/chatusers?chatId=$chatId");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -106,14 +106,13 @@ class ChatUsersController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
-    } finally {
-    }
+    } finally {}
   }
 
   void deleteUserFromChat(int chatId, String email) async {
     try {
-      var url =
-          Uri.parse("http://10.0.2.2:5000/Chats/users/delete?chatId=$chatId&email=$email");
+      var url = Uri.parse(
+          "$serverUrl/Chats/users/delete?chatId=$chatId&email=$email");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -135,12 +134,10 @@ class ChatUsersController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
-    } finally {
-    }
+    } finally {}
   }
 
   List<ChatUser> returnUsers() {
     return users.value;
   }
-
 }

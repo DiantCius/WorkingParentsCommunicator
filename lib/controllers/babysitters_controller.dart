@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_client/controllers/auth_controller.dart';
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/babysitter.dart';
 import 'package:flutter_client/models/babysitters_response.dart';
 import 'package:flutter_client/models/error_response.dart';
@@ -19,7 +20,7 @@ class BabysittersController extends GetxController {
 
   void getBabysittersForChild(int id) async {
     loading(true);
-    var url = Uri.parse("http://10.0.2.2:5000/Babysitters?id=$id");
+    var url = Uri.parse("$serverUrl/Babysitters?id=$id");
     var token = await storage.read(key: 'jwt');
 
     final response = await http.get(url, headers: {
@@ -73,7 +74,7 @@ class BabysittersController extends GetxController {
 
   Future addBabysitterToChild(int childId, String personEmail) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Babysitters/Add");
+      var url = Uri.parse("$serverUrl/Babysitters/Add");
       //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
       var requestBody =
           jsonEncode({'childId': childId, 'personEmail': personEmail});
@@ -104,7 +105,7 @@ class BabysittersController extends GetxController {
   Future deleteBabysitter(String babysitterUsername, int childId) async {
     try {
       var url = Uri.parse(
-          "http://10.0.2.2:5000/Babysitters/delete?babysitterUsername=$babysitterUsername&childId=$childId");
+          "$serverUrl/Babysitters/delete?babysitterUsername=$babysitterUsername&childId=$childId");
       String token = '';
       await storage
           .read(key: 'jwt')

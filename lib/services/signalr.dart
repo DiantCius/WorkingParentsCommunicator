@@ -1,8 +1,9 @@
 import 'dart:developer';
+import 'package:flutter_client/main.dart';
 import 'package:signalr_core/signalr_core.dart';
 
 class SignalRService {
-  final url = 'http://10.0.2.2:5000/chatHub';
+  final url = '$serverUrl/chatHub';
   late HubConnection hubConnection;
 
   void connect(messageHandler, String name) {

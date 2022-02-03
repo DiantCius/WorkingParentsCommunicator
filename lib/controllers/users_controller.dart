@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_client/main.dart';
 import 'package:flutter_client/models/error_response.dart';
 import 'package:flutter_client/models/user.dart';
 import 'package:flutter_client/models/user_response.dart';
@@ -23,7 +24,7 @@ class UsersController extends GetxController {
   void getUsers(int id) async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Users?id=$id");
+      var url = Uri.parse("$serverUrl/Users?id=$id");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -58,8 +59,7 @@ class UsersController extends GetxController {
 
   Future addBabysitterToChild(int childId, String personEmail) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Babysitters/Add");
-      //var url = Uri.parse("http://127.0.0.1:5000/Activities/add");
+      var url = Uri.parse("$serverUrl/Babysitters/Add");
       var requestBody =
           jsonEncode({'childId': childId, 'personEmail': personEmail});
       String token = '';
@@ -93,7 +93,7 @@ class UsersController extends GetxController {
 
   Future createInvitation(int childId, String personEmail) async {
     try {
-      var url = Uri.parse("http://10.0.2.2:5000/Invitations/create");
+      var url = Uri.parse("$serverUrl/Invitations/create");
       var requestBody =
           jsonEncode({'childId': childId, 'personEmail': personEmail});
       String token = '';
@@ -128,7 +128,7 @@ class UsersController extends GetxController {
   void getCurrentUser() async {
     try {
       loading(true);
-      var url = Uri.parse("http://10.0.2.2:5000/Users/user");
+      var url = Uri.parse("$serverUrl/Users/user");
       String token = '';
       await storage
           .read(key: 'jwt')
