@@ -12,7 +12,6 @@ class ActivityResponse {
   factory ActivityResponse.fromJson(Map<String, dynamic> json) {
 
     var list = json['activities'] as List;
-    print(list.runtimeType);
     List<Activity> activityList = list.map((i) => Activity.fromJson(i)).toList();
 
     return ActivityResponse(

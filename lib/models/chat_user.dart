@@ -1,14 +1,14 @@
-class Babysitter {
+class ChatUser {
   final String? username;
   final String? email;
 
-  Babysitter({
+  ChatUser({
     this.username,
     this.email,
   });
 
-  factory Babysitter.fromJson(Map<String, dynamic> json) {
-    return Babysitter(
+  factory ChatUser.fromJson(Map<String, dynamic> json) {
+    return ChatUser(
       username: json['username'],
       email: json['email'],
     );

@@ -5,29 +5,35 @@ import 'package:flutter_client/models/babysitters_response.dart';
 import 'package:get/get.dart';
 
 class Babysitters extends StatefulWidget {
-  const Babysitters({ Key? key }) : super(key: key);
+  const Babysitters({Key? key}) : super(key: key);
 
   @override
   _BabysittersState createState() => _BabysittersState();
 }
 
 class _BabysittersState extends State<Babysitters> {
-
   final ChildrenController cc = Get.find();
   final BabysittersController bs = Get.find();
 
-   @override
+  @override
   void initState() {
     super.initState();
     bs.getBabysittersForChild(cc.currentChild.value.childId!);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("${cc.currentChild.value.name}'s"),
+          title: Text("${cc.currentChild.value.name}'s babysitters"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              cc.getChildren();
+              Get.back();
+            },
+          ),
         ),
         body: Obx(() {
           if (bs.loading.isTrue)
@@ -44,7 +50,7 @@ class _BabysittersState extends State<Babysitters> {
                             return ListTile(
                               onLongPress: () {
                                 bs.currentBabysitter.value =
-                                bs.babysitters[index];
+                                    bs.babysitters[index];
                                 Get.defaultDialog(
                                     title: '',
                                     content: Column(
@@ -57,16 +63,21 @@ class _BabysittersState extends State<Babysitters> {
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                            bs.deleteBabysitter(bs.currentBabysitter.value.username!, cc.currentChild.value.childId!)
-                                              .then((value) => {
-                                                    if (value
-                                                        is BabysittersResponse)
-                                                      {print('ok')}
-                                                    else
-                                                      Get.defaultDialog(
-                                                          middleText:
-                                                              value.message)
-                                                  });
+                                            bs
+                                                .deleteBabysitter(
+                                                    bs.currentBabysitter.value
+                                                        .username!,
+                                                    cc.currentChild.value
+                                                        .childId!)
+                                                .then((value) => {
+                                                      if (value
+                                                          is BabysittersResponse)
+                                                        {print('ok')}
+                                                      else
+                                                        Get.defaultDialog(
+                                                            middleText:
+                                                                value.message)
+                                                    });
                                             Get.back();
                                           },
                                           child: Text(
@@ -80,27 +91,29 @@ class _BabysittersState extends State<Babysitters> {
                                     ),
                                     radius: 10.0);
                               },
-                              onTap: () {
-                              },
+                              onTap: () {},
                               title: Text("${bs.babysitters[index].username}"),
                               subtitle: Column(
                                 children: <Widget>[
                                   Text("${bs.babysitters[index].email}"),
                                 ],
                               ),
-                              );
+                            );
                           }));
                 }),
                 FloatingActionButton.extended(
                   onPressed: () {
-                   Get.toNamed('/searchBabysitters');
+                    Get.toNamed('/searchBabysitters');
                   },
-                  label: Text("Add Babysitter"),
-                  icon: const Icon(Icons.note_add),
+                  label: Text("Invite Babysitter"),
+                  icon: const Icon(Icons.add, size: 40),
                   backgroundColor: Colors.blue,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 //Text(bs.currentBabysitter.value.username!),
-                Text(cc.currentChild.value.childId.toString()),
+                //Text(cc.currentChild.value.childId.toString()),
               ],
             );
         }));

@@ -21,17 +21,15 @@ class Signup extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: EdgeInsets.only(top: 50.0),
               child: Center(
                 child: Container(
-                  width: 200,
                   height: 150,
                 ),
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.all(10.0),
               child: TextField(
                 controller: usernameController,
                 decoration: InputDecoration(
@@ -41,33 +39,28 @@ class Signup extends StatelessWidget {
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              padding: EdgeInsets.all(10.0),
               child: TextField(
                 controller: emailController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
+                    hintText: 'Enter email'),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 15),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.all(10.0),
               child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: InputDecoration(
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    hintText: 'Enter  password',
                     labelText: 'Password',
-                    hintText: 'Enter secure password'),
-              ),
+                  )),
             ),
             Container(
               height: 50,
-              width: 250,
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(

@@ -1,56 +1,54 @@
 import 'dart:convert';
-
 import 'package:flutter_client/controllers/auth_controller.dart';
 import 'package:flutter_client/main.dart';
-import 'package:flutter_client/models/child.dart';
-import 'package:flutter_client/models/children_response.dart';
-import 'package:flutter_client/models/error_response.dart';
+import 'package:flutter_client/models/chat.dart';
+import 'package:flutter_client/models/chats_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class ChildrenController extends GetxController {
-  var loading = true.obs;
-  var children = <Child>[].obs;
-  var count = 0.obs;
-  var currentChild = Child().obs;
+class ChatsController extends GetxController {
   final FlutterSecureStorage storage = Get.find();
-
   final AuthController ac = Get.find();
+  var chats = <Chat>[].obs;
+  var currentChat = Chat().obs;
+  var count = 0.obs;
+  var currentActivity = Chat().obs;
+  var loading = true.obs;
 
-  void getChildren() async {
+  void getChats() async {
+    loading(true);
     try {
-      loading(true);
-      var url = Uri.parse("$serverUrl/Children");
+      var url = Uri.parse("$serverUrl/Chats");
       String token = '';
       await storage
           .read(key: 'jwt')
           .then((value) => {if (value != null) token = value});
+
       final response = await http.get(url, headers: {
         "Accept": "application/json",
         "content-type": "application/json",
         "Authorization": "Bearer $token"
       });
       if (response.statusCode == 200) {
-        var childrenList = ChildrenResponse.fromJson(jsonDecode(response.body));
-        children.value = childrenList.children;
-        count.value = childrenList.count;
+        var chatList = ChatsResponse.fromJson(jsonDecode(response.body));
+        chats.value = chatList.chats;
+        count.value = chatList.count;
       }
       if (response.statusCode == 401) {
         ac.logOut();
         Get.toNamed("/login");
       }
     } catch (e) {
-      print(e.toString());
     } finally {
       loading(false);
     }
   }
 
-  void addChild(String name, String birthDate) async {
+  void addChat(String name) async {
     try {
-      var url = Uri.parse("$serverUrl/Children/add");
-      var requestBody = jsonEncode({'name': name, 'birthDate': birthDate});
+      var url = Uri.parse("$serverUrl/Chats/add");
+      var requestBody = jsonEncode(name);
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -62,10 +60,9 @@ class ChildrenController extends GetxController {
         "Authorization": "Bearer $token"
       });
       if (response.statusCode == 200) {
-        var childrenList = ChildrenResponse.fromJson(jsonDecode(response.body));
-        children.value = childrenList.children;
-        count.value = childrenList.count;
-        print('ok');
+        var chat = Chat.fromJson(jsonDecode(response.body));
+        chats.add(chat);
+        count.value = count.value + 1;
       }
       if (response.statusCode == 401) {
         ac.logOut();
@@ -73,12 +70,12 @@ class ChildrenController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
-    } finally {}
+    }
   }
 
-  Future deleteChild(int childId) async {
+  void leaveChat(int chatId) async {
     try {
-      var url = Uri.parse("$serverUrl/Children/delete?childId=$childId");
+      var url = Uri.parse("$serverUrl/Chats/users/leave?chatId=$chatId");
       String token = '';
       await storage
           .read(key: 'jwt')
@@ -90,17 +87,13 @@ class ChildrenController extends GetxController {
         "Authorization": "Bearer $token"
       });
       if (response.statusCode == 200) {
-        var childrenList = ChildrenResponse.fromJson(jsonDecode(response.body));
-        children.value = childrenList.children;
-        count.value = childrenList.count;
-        return childrenList;
+        var chatList = ChatsResponse.fromJson(jsonDecode(response.body));
+        chats.value = chatList.chats;
+        count.value = chatList.count;
       }
       if (response.statusCode == 401) {
         ac.logOut();
         Get.toNamed("/login");
-      } else {
-        var errorResponse = ErrorResponse.fromJson(jsonDecode(response.body));
-        return errorResponse;
       }
     } catch (e) {
       print(e.toString());

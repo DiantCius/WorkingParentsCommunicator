@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/controllers/auth_controller.dart';
-import 'package:flutter_client/controllers/children_controller.dart';
 import 'package:flutter_client/models/auth_response.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +13,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailController = new TextEditingController();
   final passwordController = new TextEditingController();
-
   final AuthController ac = Get.find();
 
   @override
@@ -28,51 +26,48 @@ class _LoginState extends State<Login> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: EdgeInsets.only(top: 50.0),
               child: Center(
                 child: Container(
-                  width: 200,
                   height: 150,
                 ),
               ),
             ),
-            //Obx(() => Text(ac.token.toString())),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.all(10.0),
               child: TextField(
                 controller: emailController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
+                    hintText: 'Enter email'),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.all(10.0),
               child: TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    hintText: 'Enter password',
                     labelText: 'Password',
-                    hintText: 'Enter secure password'),
-              ),
+                  )),
             ),
             TextButton(
               onPressed: () {
-                //TODO FORGOT PASSWORD SCREEN GOES HERE
+                Get.toNamed("/forgotPassword");
               },
               child: Text(
                 'Forgot Password',
-                style: TextStyle(color: Colors.blue, fontSize: 15),
+                style: TextStyle(fontSize: 15, color: Colors.blue),
               ),
             ),
             Container(
+              height: 20,
+            ),
+            Container(
               height: 50,
-              width: 250,
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
