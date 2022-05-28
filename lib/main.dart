@@ -23,8 +23,9 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-//final serverUrl = "192.168.43.141:5001";
-final serverUrl = "http://10.0.2.2:5000";
+//final serverUrl = "http://192.168.43.141:5001";
+//final serverUrl = "http://10.0.2.2:5000";
+final serverUrl = "https://parents-communicator.herokuapp.com";
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();

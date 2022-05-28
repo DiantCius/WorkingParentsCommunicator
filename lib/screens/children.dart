@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_client/controllers/auth_controller.dart';
-import 'package:flutter_client/controllers/babysitters_controller.dart';
 import 'package:flutter_client/controllers/children_controller.dart';
-import 'package:flutter_client/controllers/invitations_controller.dart';
-import 'package:flutter_client/controllers/users_controller.dart';
 import 'package:flutter_client/models/children_response.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class Children extends StatefulWidget {
-  const Children({ Key? key }) : super(key: key);
+  const Children({Key? key}) : super(key: key);
 
   @override
   _ChildrenState createState() => _ChildrenState();
@@ -29,13 +24,10 @@ class _ChildrenState extends State<Children> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
+    return Obx(
+      () {
         if (cc.loading.isTrue)
           return CircularProgressIndicator();
-        else if(cc.count.value == 0)
-          return Center(
-          child: Text("No childrens"),
-        );
         else
           return Column(
             children: <Widget>[
@@ -145,7 +137,7 @@ class _ChildrenState extends State<Children> {
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime(2050));
                               dateOfBirthController.text =
-                                  date.toString().substring(0, 10);
+                                  date!.toIso8601String() + 'Z';
                             },
                           ),
                           SizedBox(
@@ -165,14 +157,16 @@ class _ChildrenState extends State<Children> {
                               style: TextStyle(
                                   color: Colors.white, fontSize: 16.0),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       radius: 10.0);
                 },
                 label: Text("Add Child"),
-                icon: const Icon(Icons.child_care,
-                size:  40,),
+                icon: const Icon(
+                  Icons.child_care,
+                  size: 40,
+                ),
                 backgroundColor: Colors.blue,
               ),
               SizedBox(
@@ -180,6 +174,7 @@ class _ChildrenState extends State<Children> {
               ),
             ],
           );
-      },);
+      },
+    );
   }
 }
